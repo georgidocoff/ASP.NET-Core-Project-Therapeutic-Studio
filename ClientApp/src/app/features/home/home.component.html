@@ -1,9 +1,48 @@
 <h1>Theurapeutic Managment Education Platform </h1>
 
 <div *ngIf="!(isAuthenticated)">Guest User
-
+  <div class="image">
+    <img style="width: fit-content;" src="../../../assets/layout/image/home-guest.jpg" alt="home-guest">
+  </div>
 </div>
 
-<div *ngIf="(isAuthenticated)">Login User
-
+<div *ngIf="(isAuthenticated)">
+    <div class="mb-2">
+            <button type="button" class="btn btn-primary"> < </button>
+            <button type="button" class="btn btn-primary"> > </button>
+            <button type="button" class="btn btn-primary"> today </button>
+        
+        <span style="size: 16;" class="nav justify-content-end">
+            {{currentDate}}
+        </span>        
+    </div>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">hour</th>
+        <th scope="col">First trainer</th>
+        <th scope="col">Second trainer</th>
+        <th scope="col">Third trainer</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">6</th>
+        <td>Mark Otto</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <th scope="row">7</th>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <th scope="row">8</th>
+        <td colspan="2">Larry the Bird</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
 </div>
