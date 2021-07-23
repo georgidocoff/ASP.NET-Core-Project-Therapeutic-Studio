@@ -13,10 +13,13 @@ namespace TherapeuticStudio
     using Microsoft.Extensions.Hosting;
 
     using System;
+    using System.Net;
+    using System.Threading.Tasks;
 
     using TherapeuticStudio.Data;
     using TherapeuticStudio.Models;
     using TherapeuticStudio.Services.Extensions;
+    using TherapeuticStudio.Services.Therapists;
 
     public class Startup
     {
@@ -50,6 +53,9 @@ namespace TherapeuticStudio
             services
                 .AddRazorPages();
 
+            services
+                .AddTransient<ITherapistService, TherapistService>();
+
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist";
@@ -80,6 +86,15 @@ namespace TherapeuticStudio
             app.UseRouting();
 
             app.UseAuthentication();
+
+            app.UseStatusCodePages(context => {
+                var response = context.HttpContext.Response;
+                if (response.StatusCode == (int)HttpStatusCode.Unauthorized ||
+                    response.StatusCode == (int)HttpStatusCode.Forbidden)
+                    response.Redirect("/authentication/login");
+                return Task.CompletedTask;
+            });
+
             app.UseIdentityServer();
             app.UseAuthorization();
 
