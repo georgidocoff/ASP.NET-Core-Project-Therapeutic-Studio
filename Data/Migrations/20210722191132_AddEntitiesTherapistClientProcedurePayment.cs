@@ -8,7 +8,7 @@ namespace TherapeuticStudio.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Тherapists",
+                name: "Therapists",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -21,7 +21,7 @@ namespace TherapeuticStudio.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Тherapists", x => x.Id);
+                    table.PrimaryKey("PK_Therapists", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -85,7 +85,7 @@ namespace TherapeuticStudio.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Тherapists");
+                name: "Therapists");
 
             migrationBuilder.DropTable(
                 name: "Payments");

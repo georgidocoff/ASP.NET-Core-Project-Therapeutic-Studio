@@ -11,7 +11,7 @@
 
     public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
     {
-        public DbSet<Тherapist> Тherapists { get; set; }
+        public DbSet<Тherapist> Therapists { get; set; }
 
         public DbSet<Client> Clients { get; set; }
 

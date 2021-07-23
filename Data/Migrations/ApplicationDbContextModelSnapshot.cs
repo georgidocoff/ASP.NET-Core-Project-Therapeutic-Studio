@@ -367,7 +367,7 @@ namespace TherapeuticStudio.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Тherapists");
+                    b.ToTable("Therapists");
                 });
 
             modelBuilder.Entity("TherapeuticStudio.Models.ApplicationUser", b =>
