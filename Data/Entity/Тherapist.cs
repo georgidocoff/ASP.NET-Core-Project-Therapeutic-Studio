@@ -21,8 +21,8 @@
         [MaxLength(ТherapistNameMaxLenght)]
         public string LastName { get; set; }
 
-        public PositionType PositionType { get; set; }
+        public PositionType? PositionType { get; set; }
 
-        public RoleType RoleType { get; set; }
+        public RoleType? RoleType { get; set; }
     }
 }
