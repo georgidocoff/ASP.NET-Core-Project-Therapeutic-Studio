@@ -1,9 +1,9 @@
 import { Observable } from "rxjs";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
-import { AppConstants } from '../../shared/app-constan'
 import { environment } from "src/environments/environment";
 import { Injectable } from "@angular/core";
+import { TherapistModel } from "src/app/shared/Models/TherapistModel";
 
 
 @Injectable()
@@ -26,5 +26,10 @@ export class ApiRequest {
                     )),
                 catchError(async () => console.error())
             );
+    }
+
+    public getTherapist(){
+      return  this.http
+            .get<TherapistModel[]>(`${environment.url}` + '/api/therapists');
     }
 }
