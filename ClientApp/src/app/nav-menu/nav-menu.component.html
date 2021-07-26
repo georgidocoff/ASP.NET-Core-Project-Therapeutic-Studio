@@ -25,23 +25,33 @@
             [routerLinkActiveOptions]="{ exact: true }">
             <a class="nav-link text-dark" [routerLink]="['/']">Home</a>
           </li>
-          <li *ngIf="isAuthenticated" class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/fetch-data']"
-              >Schedule</a>
+          <li *ngIf="isAuthenticated" class="nav-item ml-auto" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark" [routerLink]="['/therapists-manage']"
+              >Manage Client</a>
           </li>
-          <li *ngIf="isAuthenticated" class="nav-item dropdown ml-auto">
+          <li *ngIf="isAuthenticated" class="nav-item ml-auto" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark" [routerLink]="['/cash-desk/report']"
+              >Cash</a>
+          </li>
+          <li *ngIf="isAuthenticated" class="nav-item dropdown ml-end">
             <a class="nav-link text-dark dropdown-toggle" [routerLink] id="navbarDropdown" data-toggle="dropdown" (click)="show=!show">Administration</a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" [ngClass]="{show: show === true}">
                 <span class="col-md-1">Therapist:</span>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" [routerLink]="['/features/therapist/create']" (click)="show=!show">Create</a>
                 <a class="dropdown-item" [routerLink]="['/features/therapist/manage']" (click)="show=!show">Manage</a>
+                <div class="dropdown-divider"></div>
+                <span class="col-md-1">Procedure:</span>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" [routerLink]="['/features/procedure/create']" (click)="show=!show">Create</a>
+                <a class="dropdown-item" [routerLink]="['/features/procedure/manage']" (click)="show=!show">Manage</a>
+                <div class="dropdown-divider"></div>
+                <span class="col-md-1">Client:</span>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" [routerLink]="['/features/client/create']" (click)="show=!show">Create</a>
+                <a class="dropdown-item" [routerLink]="['/features/client/manage']" (click)="show=!show">Manage</a>
             </div>
-        </li>
-          <li *ngIf="isAuthenticated" class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/fetch-data']"
-              >Cash</a>
-          </li>
+        </li>          
         </ul>
         <app-login-menu></app-login-menu>
       </div>
