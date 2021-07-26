@@ -1,5 +1,6 @@
 ﻿namespace TherapeuticStudio.Services.Extensions
 {
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -17,7 +18,8 @@
 
         public static void ConfigureAddDefaultIdentity(this IServiceCollection services)
         {
-            services.AddDefaultIdentity<ApplicationUser>(options =>
+            services
+                .AddDefaultIdentity<ApplicationUser>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = false;
                 options.Password.RequireDigit = false;

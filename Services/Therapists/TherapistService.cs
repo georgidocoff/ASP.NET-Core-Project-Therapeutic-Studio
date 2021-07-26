@@ -1,11 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 using TherapeuticStudio.Data;
 using TherapeuticStudio.Data.Entity;
+using TherapeuticStudio.Data.Enums;
 
 namespace TherapeuticStudio.Services.Therapists
 {
@@ -20,13 +22,27 @@ namespace TherapeuticStudio.Services.Therapists
 
         public async Task<TherapistModel> CreateTherapist(TherapistModel therapistModel)
         {
+            //object positionType;
+            //object roleType;
+
+            //if (!Enum.TryParse(typeof(PositionType), therapistModel.PositionType.ToString(), out positionType))
+            //{
+            //    throw new InvalidOperationException("Error parsing enum value.");
+            //}
+
+            //if (!Enum.TryParse(typeof(RoleType), therapistModel.RoleType.ToString(), out roleType))
+            //{
+            //    throw new InvalidOperationException("Error parsing enum value.");
+            //}
+
             var therapist = new Тherapist
             {
+                Id =therapistModel.Id,
                 FirstName = therapistModel.FirstName,
                 MiddleName = therapistModel.MiddleName,
                 LastName = therapistModel.LastName,
-                PositionType = therapistModel.PositionType.Value,
-                RoleType = therapistModel.RoleType.Value
+                PositionType = therapistModel.PositionType.HasValue ? therapistModel.PositionType.Value:null,
+                RoleType = therapistModel.RoleType.HasValue? therapistModel.RoleType.Value:null
             };
 
             this.dbContext.Therapists.Add(therapist);
