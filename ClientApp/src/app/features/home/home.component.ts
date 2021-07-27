@@ -11,11 +11,15 @@ import { AppConstants } from '../../shared/app-constan';
 export class HomeComponent {
   user: any;
   isAuthenticated: boolean;
+  show: boolean = true;
   currentDate: any;
   searchDate = new Date;
   workHours: any[];
+  reservedHour:any;
   therapist: ITherapistModel;
   therapists: ITherapistModel[];
+  therapistFirstName: string;
+  therapistLastName: string;
 
   constructor(
     private storage: LocalStorageServiceService,
@@ -43,10 +47,21 @@ export class HomeComponent {
 
   }
 
+  private cancel() {
+    this.show = !this.show;
+  }
+
+  private save() {
+    this.show = !this.show;
+  }
+
   private selectTherapist(therapist, workHour): void {
     console.log(therapist);
-    console.log(workHour);
-
+    //console.log(workHour);
+    this.show = !this.show;
+    this.therapistFirstName = therapist.firstName;
+    this.therapistLastName = therapist.lastName;
+    this.reservedHour=workHour.currentDate;
   }
 
   private createCurrentDate(date): Date {

@@ -11,7 +11,7 @@
   </body>
 </div>
 
-<div *ngIf="(isAuthenticated)">
+<div *ngIf="(isAuthenticated && show)">
   <div class="mb-2">
     <button type="button" class="btn btn-info">
       < </button> <button type="button" class="btn btn-info"> >
@@ -36,10 +36,55 @@
         <td>
           <div>{{workHour.index}} h.</div>
         </td>
-        <td *ngFor="let therapist of therapists" (click)=selectTherapist(therapist,workHour)>
+        <td *ngFor="let therapist of therapists" (click)=selectTherapist(therapist,workHour) data-toggle="modal"
+          data-target="#exampleModal">
           <div></div>
         </td>
       </tr>
     </tbody>
   </table>
+</div>
+
+<div *ngIf="!show">
+  <div mat-dialog-content header="Запазване на час">
+    <div class="p-field">
+      <label for="clientFullName">Име</label>
+      <p>
+        //TODO: implement clientFullName
+      </p>
+    </div>
+    <div class="p-fluid">
+      <div class="p-field">
+        <label for="trainer">Избор на Терапевт</label>
+        <p>
+          {{therapistFirstName}} {{therapistLastName}}
+        </p>
+      </div>
+    </div>
+    <div class="p-field" *ngIf="paymentMethodAccess">
+    </div>
+    <div class="p-fluid">
+      <div class="p-field">
+        <label for="procedure">Избор на Процедура</label>
+        <p>
+          //TODO: implement procedure
+        </p>
+      </div>
+    </div>
+    <div class="p-fluid">
+      <label for="start">За</label>
+      <p>
+        {{reservedHour}}
+      </p>
+    </div>
+    <div class="p-fluid" *ngIf="paymentMethodAccess">
+      <p>
+        //TODO: implement radio buton for type of payment
+      </p>
+    </div>
+  </div>
+  <div mat-dialog-actions>
+    <button type="button" class="btn btn-light" (click)="cancel()">Cancel</button>
+    <button type="button" class="btn btn-light" (click)="save()">Save</button>
+  </div>
 </div>
