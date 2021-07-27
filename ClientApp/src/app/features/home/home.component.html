@@ -26,28 +26,19 @@
     <thead>
       <tr>
         <th scope="col">hour</th>
-        <th scope="col">First trainer</th>
-        <th scope="col">Second trainer</th>
-        <th scope="col">Third trainer</th>
+        <th *ngFor="let therapist of therapists">
+          <div>{{therapist.firstName}} {{therapist.lastName}}</div>
+        </th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <th scope="row">6</th>
-        <td>Mark Otto</td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <th scope="row">7</th>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <th scope="row">8</th>
-        <td colspan="2">Larry the Bird</td>
-        <td></td>
+      <tr scope="row" *ngFor="let workHour of workHours">
+        <td>
+          <div>{{workHour.index}} h.</div>
+        </td>
+        <td *ngFor="let therapist of therapists" (click)=selectTherapist(therapist,workHour)>
+          <div></div>
+        </td>
       </tr>
     </tbody>
   </table>
