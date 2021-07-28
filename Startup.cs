@@ -3,11 +3,7 @@ namespace TherapeuticStudio
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.HttpsPolicy;
-    using Microsoft.AspNetCore.Identity;
-    using Microsoft.AspNetCore.Identity.UI;
     using Microsoft.AspNetCore.SpaServices.AngularCli;
-    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
@@ -16,9 +12,8 @@ namespace TherapeuticStudio
     using System.Net;
     using System.Threading.Tasks;
 
-    using TherapeuticStudio.Data;
-    using TherapeuticStudio.Models;
     using TherapeuticStudio.Services.Extensions;
+    using TherapeuticStudio.Services.Procedures;
     using TherapeuticStudio.Services.Therapists;
 
     public class Startup
@@ -54,7 +49,8 @@ namespace TherapeuticStudio
                 .AddRazorPages();
 
             services
-                .AddTransient<ITherapistService, TherapistService>();
+                .AddTransient<ITherapistService, TherapistService>()
+                .AddTransient<IProcedureService, ProcedureService>();
 
             services.AddSpaStaticFiles(configuration =>
             {
