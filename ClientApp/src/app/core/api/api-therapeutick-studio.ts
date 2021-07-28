@@ -18,7 +18,7 @@ export class ApiRequest {
         let httpOptions = {
             headers: new HttpHeaders({ 'Content-Type': 'application/json' })
         };
-        
+
         return this.http
             .post<any>(environment.url + '/api/therapists', therapist, httpOptions)
             .pipe(
@@ -29,8 +29,8 @@ export class ApiRequest {
             );
     }
 
-    public getTherapist(){
-      return  this.http
+    public getTherapist() {
+        return this.http
             .get<TherapistModel[]>(`${environment.url}` + '/api/therapists');
     }
 
@@ -49,8 +49,28 @@ export class ApiRequest {
             );
     }
 
-    public getProcedures(){
-        return  this.http
-              .get<ProcedureModel[]>(`${environment.url}` + '/api/procedures');
-      }
+    public getProcedures() {
+        return this.http
+            .get<ProcedureModel[]>(`${environment.url}` + '/api/procedures');
+    }
+
+    public createClient(client: IClientModel): Observable<IClientModel> {
+        let httpOptions = {
+            headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+        };
+        
+        return this.http
+            .post<any>(environment.url + '/api/clients', client, httpOptions)
+            .pipe(
+                tap((client: any) =>
+                    console.log(`added therarapist = ${client.id}`
+                    )),
+                catchError(async () => console.error())
+            );
+    }
+
+    public getClients(){
+      return  this.http
+            .get<IClientModel[]>(`${environment.url}` + '/api/clients');
+    }
 }
