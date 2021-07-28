@@ -12,6 +12,7 @@ namespace TherapeuticStudio
     using System.Net;
     using System.Threading.Tasks;
 
+    using TherapeuticStudio.Services.Cients;
     using TherapeuticStudio.Services.Extensions;
     using TherapeuticStudio.Services.Procedures;
     using TherapeuticStudio.Services.Therapists;
@@ -50,7 +51,8 @@ namespace TherapeuticStudio
 
             services
                 .AddTransient<ITherapistService, TherapistService>()
-                .AddTransient<IProcedureService, ProcedureService>();
+                .AddTransient<IProcedureService, ProcedureService>()
+                .AddTransient<IClientService, ClientService>();
 
             services.AddSpaStaticFiles(configuration =>
             {
