@@ -1,13 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
 
 import { Infrastructure } from '../../../shared/infrastructure';
 import { ApiRequest } from '../../../core/api/api-therapeutick-studio';
 import { TherapistModel } from '../../../shared/Models/TherapistModel';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-create',
@@ -20,11 +16,9 @@ export class CreateComponent implements OnInit {
   form: FormGroup;
   positions: any;
   roles: any;
-  baseUrl: any;
 
   constructor(
     private fb: FormBuilder,
-    private http: HttpClient,
     private infrastructure: Infrastructure,
     private apiRequest: ApiRequest,
   ) { }
