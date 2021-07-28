@@ -9,20 +9,26 @@
             string output = string.Empty;
             int modifierDigit = 12;
 
-            if (ucn=="9999999999")
-            {
-                return "FFFFFFFFFF";
-            }
 
             switch (mode)
             {
                 case "encrypt":
+                    if (ucn == "9999999999")
+                    {
+                        return "FFFFFFFFFF";
+                    }
+
                     foreach (var element in ucn)
                     {
                         output += (char)((int)element + modifierDigit);
                     }
                     break;
                 case "decrypt":
+                    if (ucn == "FFFFFFFFFF")
+                    {
+                        return "9999999999";
+                    }
+
                     foreach (var element in ucn)
                     {
                         output += (char)((int)element - modifierDigit);
