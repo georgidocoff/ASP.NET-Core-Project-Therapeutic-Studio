@@ -1,1 +1,20 @@
-<p>manage works!</p>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">No</th>
+      <th scope="col">First name</th>
+      <th scope="col">Middle Name</th>
+      <th scope="col">Last Name</th>
+      <th scope="col">UCN</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let client of clients; index as i">
+      <th scope="row">{{ i + 1 }}</th>
+      <td>{{ client.firstName }}</td>
+      <td>{{ client.middleName }}</td>
+      <td>{{ client.lastName }}</td>
+      <td>{{ client.ucn }}</td>
+    </tr>
+  </tbody>
+</table>
