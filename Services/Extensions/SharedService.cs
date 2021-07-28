@@ -6,9 +6,13 @@
     {
         public static string UcnModifier(string ucn, string mode)
         {
+            string output = string.Empty;
             int modifierDigit = 12;
 
-            string output = string.Empty;
+            if (ucn=="9999999999")
+            {
+                return "FFFFFFFFFF";
+            }
 
             switch (mode)
             {
