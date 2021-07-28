@@ -15,13 +15,13 @@
                 case "encrypt":
                     foreach (var element in ucn)
                     {
-                        output += (int)element + modifierDigit;
+                        output += (char)((int)element + modifierDigit);
                     }
                     break;
                 case "decrypt":
                     foreach (var element in ucn)
                     {
-                        output += (int)element - modifierDigit;
+                        output += (char)((int)element - modifierDigit);
                     }
                     break;
                 default:
