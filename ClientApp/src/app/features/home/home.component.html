@@ -46,45 +46,43 @@
 </div>
 
 <div *ngIf="!show">
-  <div mat-dialog-content header="Запазване на час">
-    <div class="p-field">
-      <label for="clientFullName">Име</label>
-      <p>
-        //TODO: implement clientFullName
-      </p>
+  <div class="grid fluid col-md-4 offset-md-4">
+    <h2>Book an appointment</h2>
+    <label for="clientFullName">Client Name</label>
+    <p>
+      //TODO: implement clientFullName
+    </p>
+
+    <div class="field">
+      <label for="trainer">Choosen therapist</label>
+      <input class="form-control mb-3" id="therapistFullName" type="text" placeholder="{{therapistFullName}}" disabled>
     </div>
-    <div class="p-fluid">
-      <div class="p-field">
-        <label for="trainer">Избор на Терапевт</label>
+
+    <div class="field">
+      <label for="procedure">Choose Procedure</label>
+    </div>
+    <select  class="form-control mb-3" required>
+      <option *ngFor="let procedure of procedures">
+        {{procedure.name}}
+      </option>
+    </select>
+
+    <div class="field">
+      <label for="start">For hour</label>
+      <input class="form-control mb-3" id="reservedHour" type="text" value="{{reservedHour}}">
+    </div>
+
+    <div class="field" *ngIf="paymentMethodAccess">
+
+      <div class="fluid" *ngIf="paymentMethodAccess">
         <p>
-          {{therapistFirstName}} {{therapistLastName}}
+          //TODO: implement radio buton for type of payment
         </p>
       </div>
     </div>
-    <div class="p-field" *ngIf="paymentMethodAccess">
+    <div>
+      <button type="button" class="btn btn-light" (click)="cancel()">Cancel</button>
+      <button type="button" class="btn btn-light" (click)="save()">Save</button>
     </div>
-    <div class="p-fluid">
-      <div class="p-field">
-        <label for="procedure">Избор на Процедура</label>
-        <p>
-          //TODO: implement procedure
-        </p>
-      </div>
-    </div>
-    <div class="p-fluid">
-      <label for="start">За</label>
-      <p>
-        {{reservedHour}}
-      </p>
-    </div>
-    <div class="p-fluid" *ngIf="paymentMethodAccess">
-      <p>
-        //TODO: implement radio buton for type of payment
-      </p>
-    </div>
-  </div>
-  <div mat-dialog-actions>
-    <button type="button" class="btn btn-light" (click)="cancel()">Cancel</button>
-    <button type="button" class="btn btn-light" (click)="save()">Save</button>
   </div>
 </div>

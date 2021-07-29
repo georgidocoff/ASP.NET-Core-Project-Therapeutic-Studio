@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { LocalStorageServiceService } from '../../core/services/local-storage-service.service';
 import { ApiRequest } from '../../core/api/api-therapeutick-studio';
 import { AppConstants } from '../../shared/app-constan';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
@@ -11,20 +12,25 @@ import { AppConstants } from '../../shared/app-constan';
 export class HomeComponent {
   user: any;
   isAuthenticated: boolean;
+  paymentMethodAccess: boolean = false;
   show: boolean = true;
+  showDialogDropdown: boolean = true;
   currentDate: any;
   searchDate = new Date;
   workHours: any[];
-  reservedHour:any;
+  reservedHour: any;
   therapist: ITherapistModel;
   therapists: ITherapistModel[];
-  therapistFirstName: string;
-  therapistLastName: string;
+  therapistFullName: string;
+  procedures: IProcedureModel[];
+  clients: IClientModel[];
+  form: FormGroup;
 
   constructor(
     private storage: LocalStorageServiceService,
     private apiRequest: ApiRequest,
     private constants: AppConstants,
+    private fb: FormBuilder,
   ) { }
 
   ngOnInit() {
@@ -44,7 +50,15 @@ export class HomeComponent {
 
     this.createWorkHours();
 
+    this.apiRequest.getProcedures()
+      .subscribe(data=>{
+        this.procedures = data;
+      });
 
+      
+    // this.form = this.fb.group({
+    //   therapistFullName: [null],
+    // });
   }
 
   private cancel() {
@@ -55,13 +69,18 @@ export class HomeComponent {
     this.show = !this.show;
   }
 
+  private onSubmit(){
+    console.log('on submit clicked');
+    
+  }
+
   private selectTherapist(therapist, workHour): void {
-    console.log(therapist);
+    //console.log(therapist);
     //console.log(workHour);
     this.show = !this.show;
-    this.therapistFirstName = therapist.firstName;
-    this.therapistLastName = therapist.lastName;
-    this.reservedHour=workHour.currentDate;
+    this.therapistFullName = therapist.firstName + ' '+ therapist.lastName;
+    this.reservedHour = workHour.currentDate;
+    this.showDialogDropdown=!this.showDialogDropdown;
   }
 
   private createCurrentDate(date): Date {
