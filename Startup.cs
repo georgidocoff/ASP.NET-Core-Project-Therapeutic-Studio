@@ -12,7 +12,7 @@ namespace TherapeuticStudio
     using System.Net;
     using System.Threading.Tasks;
 
-    using TherapeuticStudio.Services.Cients;
+    using TherapeuticStudio.Services.Clients;
     using TherapeuticStudio.Services.Extensions;
     using TherapeuticStudio.Services.Procedures;
     using TherapeuticStudio.Services.Therapists;

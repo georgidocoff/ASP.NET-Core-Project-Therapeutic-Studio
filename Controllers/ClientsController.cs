@@ -6,7 +6,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    using TherapeuticStudio.Services.Cients;
+    using TherapeuticStudio.Services.Clients;
 
     [ApiController]
     [Route("api/clients")]

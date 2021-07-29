@@ -1,4 +1,4 @@
-﻿namespace TherapeuticStudio.Services.Cients
+﻿namespace TherapeuticStudio.Services.Clients
 {
     using Microsoft.EntityFrameworkCore;
 
