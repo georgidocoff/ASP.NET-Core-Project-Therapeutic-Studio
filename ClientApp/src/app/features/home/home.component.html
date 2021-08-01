@@ -1,5 +1,4 @@
 <h1>Theurapeutic Managment Education Platform </h1>
-
 <div *ngIf="!(isAuthenticated)">Guest User
 
   <body class="landing-body">
@@ -46,43 +45,43 @@
 </div>
 
 <div *ngIf="!show">
-  <div class="grid fluid col-md-4 offset-md-4">
-    <h2>Book an appointment</h2>
-    <label for="clientFullName">Client Name</label>
-    <p>
-      //TODO: implement clientFullName
-    </p>
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <div class="grid fluid">
+      <div class="col-12 md-6 offset-md-5">
 
-    <div class="field">
-      <label for="trainer">Choosen therapist</label>
-      <input class="form-control mb-3" id="therapistFullName" type="text" placeholder="{{therapistFullName}}" disabled>
-    </div>
-
-    <div class="field">
-      <label for="procedure">Choose Procedure</label>
-    </div>
-    <select  class="form-control mb-3" required>
-      <option *ngFor="let procedure of procedures">
-        {{procedure.name}}
-      </option>
-    </select>
-
-    <div class="field">
-      <label for="start">For hour</label>
-      <input class="form-control mb-3" id="reservedHour" type="text" value="{{reservedHour}}">
-    </div>
-
-    <div class="field" *ngIf="paymentMethodAccess">
-
-      <div class="fluid" *ngIf="paymentMethodAccess">
-        <p>
-          //TODO: implement radio buton for type of payment
-        </p>
+        <div class="card col-12 mt-2 mb-2 lg-4 mb-lg-0" style="width: 17rem;">
+          <h5>Book an appointment:</h5>
+          <div class="flex">
+            <div class="field">
+              <input class="form-control mb-3" formControlName="clientFullName" [typeahead]="searchClients()"
+                id="clientFullName" type="text" placeholder="Client full Name">
+            </div>
+            <div class="field">
+              <select class="form-control mb-3" id="currProcedure" formControlName="currProcedure" required>
+                <option *ngFor="let procedure of procedures">
+                  <input id="currProcedure" type="text" placeholder="Select Procedure" clear/>{{procedure.name}}
+                </option>
+              </select>
+            </div>
+            <div class="field">
+              <input class="form-control mb-3" id="therapistFullName" formControlName="therapistFullName"
+                value="{{therapistFullName}}" type="text" placeholder="Therapist Full Name" />
+            </div>
+            <div class="field">
+              <input class="form-control mb-3" id="reservedHour" formControlName="reservedHour" value="{{reservedHour}}"
+                type="text" placeholder="booking a hour"  />
+            </div>
+            <div class="mt-3 mb-3">
+              <span>
+                <button type="submit" class="btn btn-primary" (click)="cancel()">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save</button>
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div>
-      <button type="button" class="btn btn-light" (click)="cancel()">Cancel</button>
-      <button type="button" class="btn btn-light" (click)="save()">Save</button>
-    </div>
-  </div>
+  </form>
+
+
 </div>
