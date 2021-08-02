@@ -19,6 +19,8 @@
 
         public DbSet<Payment> Payments { get; set; }
 
+        public DbSet<Scheduler> Schedulers { get; set; }
+
         public ApplicationDbContext(
             DbContextOptions options,
             IOptions<OperationalStoreOptions> operationalStoreOptions)
