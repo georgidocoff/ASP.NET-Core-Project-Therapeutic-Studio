@@ -35,8 +35,7 @@
         <td>
           <div>{{workHour.index}} h.</div>
         </td>
-        <td *ngFor="let therapist of therapists" (click)=selectTherapist(therapist,workHour) data-toggle="modal"
-          data-target="#exampleModal">
+        <td *ngFor="let therapist of therapists" (click)=selectTherapist(therapist,workHour)>
           <div></div>
         </td>
       </tr>
@@ -45,7 +44,7 @@
 </div>
 
 <div *ngIf="!show">
-  <form [formGroup]="form" (ngSubmit)="save()">
+  <form [formGroup]="form" (ngSubmit)="save(therapistFullName,reservedHour)">
     <div class="grid fluid">
       <div class="col-12 md-6 offset-md-5">
 
@@ -59,17 +58,17 @@
             <div class="field">
               <select class="form-control mb-3" id="currProcedure" formControlName="currProcedure" required>
                 <option *ngFor="let procedure of procedures">
-                  <input id="currProcedure" type="text" placeholder="Select Procedure" clear/>{{procedure.name}}
+                  <input id="currProcedure" type="text" placeholder="Select Procedure" clear />{{procedure.name}}
                 </option>
               </select>
             </div>
             <div class="field">
               <input class="form-control mb-3" id="therapistFullName" formControlName="therapistFullName"
-                value="{{therapistFullName}}" type="text" placeholder="Therapist Full Name" />
+                value="{{therapistFullName}}" type="text" placeholder="Therapist Full Name" disabled="true" />
             </div>
             <div class="field">
               <input class="form-control mb-3" id="reservedHour" formControlName="reservedHour" value="{{reservedHour}}"
-                type="text" placeholder="booking a hour"  />
+                type="text" placeholder="Booking a hour" disabled="true"/>
             </div>
             <div class="mt-3 mb-3">
               <span>
