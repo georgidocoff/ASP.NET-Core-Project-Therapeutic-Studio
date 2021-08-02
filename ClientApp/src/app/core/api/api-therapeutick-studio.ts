@@ -43,7 +43,7 @@ export class ApiRequest {
             .post<any>(environment.url + '/api/procedures', procedure, httpOptions)
             .pipe(
                 tap((procedure: any) =>
-                    console.log(`added therarapist = ${procedure.id}`
+                    console.log(`added procedure = ${procedure.id}`
                     )),
                 catchError(async () => console.error())
             );
@@ -63,7 +63,7 @@ export class ApiRequest {
             .post<any>(environment.url + '/api/clients', client, httpOptions)
             .pipe(
                 tap((client: any) =>
-                    console.log(`added therarapist = ${client.id}`
+                    console.log(`added client = ${client.id}`
                     )),
                 catchError(async () => console.error())
             );
@@ -73,4 +73,26 @@ export class ApiRequest {
       return  this.http
             .get<IClientModel[]>(`${environment.url}` + '/api/clients');
     }
+
+    public createScheduler(scheduler: ISchedulerModel): Observable<ISchedulerModel> {
+        let httpOptions = {
+            headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+        };
+        
+        return this.http
+            .post<any>(environment.url + '/api/schedulers', scheduler, httpOptions)
+            .pipe(
+                tap((scheduler: any) =>
+                    console.log(`added scheduler = ${scheduler.id}`
+                    )),
+                catchError(async () => console.error())
+            );
+    }
+
+    public getSchedulers(){
+      return  this.http
+            .get<ISchedulerModel[]>(`${environment.url}` + '/api/schedulers');
+    }
+
+
 }
