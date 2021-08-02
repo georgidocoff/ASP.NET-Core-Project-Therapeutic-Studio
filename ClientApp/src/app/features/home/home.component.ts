@@ -9,7 +9,9 @@ import { ProcedureModel } from 'src/app/shared/Models/ProcedureModel';
 import { Observable, OperatorFunction } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/operators';
 import { TypeaheadConfig } from 'ngx-bootstrap/typeahead';
-import { BsDropdownConfig, BsDropdownDirective} from 'ngx-bootstrap/dropdown';
+import { BsDropdownConfig, BsDropdownDirective } from 'ngx-bootstrap/dropdown';
+import { SchedulerModel } from 'src/app/shared/Models/SchedulerModel';
+import { TherapistModel } from 'src/app/shared/Models/TherapistModel';
 
 
 @Component({
@@ -28,8 +30,6 @@ import { BsDropdownConfig, BsDropdownDirective} from 'ngx-bootstrap/dropdown';
 @Injectable()
 
 export class HomeComponent {
-  clientFullName = new FormControl();
-  currProcedure = new FormControl();
   form: FormGroup;
 
   user: any;
@@ -56,6 +56,7 @@ export class HomeComponent {
   ) { }
 
   ngOnInit() {
+
     this.form = this.fb.group({
       clientFullName: [null],
       currProcedure: [null],
@@ -82,7 +83,7 @@ export class HomeComponent {
     this.apiRequest.getProcedures()
       .subscribe(data => {
         this.procedures = data;
-        this.procedures.unshift({ name: 'Select Procedure' } as ProcedureModel)
+        this.procedures.unshift({ name: 'Select Procedure' } as ProcedureModel);
       });
 
     this.apiRequest.getClients()
@@ -110,21 +111,42 @@ export class HomeComponent {
     return clientsExtend;
   }
 
-  private cancel() {
+  private cancel(): void {
     this.form.reset();
     this.show = !this.show;
   }
 
-  private save(): void {
+  private save(therapistFullName, reservedHour): void {
     this.show = !this.show;
-    console.log(this.form.value);
+    let currentScheduler = new SchedulerModel;
+    currentScheduler.TimeStamp = reservedHour;
+    currentScheduler.ProcedureId = this.procedures.find(x => x.name == this.form.value.currProcedure).id;
+    currentScheduler.ClientId = this.clients.find(x => x.fullName == this.form.value.clientFullName).id;
+    currentScheduler.TherapistId = this.getTherapistId(therapistFullName);
+    
+    currentScheduler.PaymentType = 0;
+    //console.log(currentScheduler);
+
+    this.apiRequest.createScheduler(currentScheduler)
+      .subscribe(data => {
+        //console.log(data);
+
+      });
 
     this.form.reset();
   }
 
-  private onSubmit() {
-    console.log('on submit clicked');
+ private getTherapistId(therapistFullName): number {
+    let addedTherapist = therapistFullName.split(' ');
+    let currentTherapist = new TherapistModel as ITherapistModel;
+    currentTherapist.firstName = addedTherapist[0];
+    currentTherapist.lastName
+    let therapistId = this.therapists.find(x =>
+    ((x.firstName == addedTherapist[0]) &&
+      (x.lastName == addedTherapist[addedTherapist.length - 1] )&&
+      (addedTherapist.length > 2 ? x.middleName == addedTherapist[1] : true))).id;
 
+    return therapistId;
   }
 
   private selectTherapist(therapist, workHour): void {
