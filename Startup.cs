@@ -54,7 +54,7 @@ namespace TherapeuticStudio
                 .AddTransient<ITherapistService, TherapistService>()
                 .AddTransient<IProcedureService, ProcedureService>()
                 .AddTransient<IClientService, ClientService>()
-                .AddTransient<ISchedulerService, Schedulerervice>();
+                .AddTransient<ISchedulerService, SchedulerService>();
 
             services.AddSpaStaticFiles(configuration =>
             {
