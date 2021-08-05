@@ -31,12 +31,14 @@
       </tr>
     </thead>
     <tbody>
-      <tr scope="row" *ngFor="let workHour of workHours">
+      <tr scope="row" *ngFor="let workHour of workHours;index as i">
         <td>
           <div>{{workHour.index}} h.</div>
         </td>
-        <td *ngFor="let therapist of therapists" (click)=selectTherapist(therapist,workHour)>
-          <div></div>
+        <td *ngFor="let therapist of therapists" (click)=selectTherapist(therapist,workHour,$event)>
+          <div>
+            <span class="data" *ngIf="isDataAvaible(therapist, workHour,i)">{{clientToView}}</span>
+          </div>
         </td>
       </tr>
     </tbody>
@@ -49,16 +51,18 @@
       <div class="col-12 md-6 offset-md-5">
 
         <div class="card col-12 mt-2 mb-2 lg-4 mb-lg-0" style="width: 17rem;">
-          <h5>Book an appointment:</h5>
+          <h5>Book an procedure:</h5>
           <div class="flex">
             <div class="field">
-              <input class="form-control mb-3" formControlName="clientFullName" [typeahead]="searchClients()"
-                id="clientFullName" type="text" placeholder="Client full Name">
+              <input #itemSelect class="form-control mb-3" formControlName="clientFullName"
+                [typeahead]="searchClients()" id="clientFullName" type="text" placeholder="Client full Name"
+                value="{{clientFullName}}">
             </div>
             <div class="field">
-              <select class="form-control mb-3" id="currProcedure" formControlName="currProcedure" required>
+              <select class="form-control mb-3" id="currProcedure" formControlName="currProcedure" (change)="changeProcedure()">
+                <option *ngIf="procedure">{{procedure.name}}</option>
                 <option *ngFor="let procedure of procedures">
-                  <input id="currProcedure" type="text" placeholder="Select Procedure" clear />{{procedure.name}}
+                  <span>{{procedure.name}}</span>
                 </option>
               </select>
             </div>
@@ -68,7 +72,10 @@
             </div>
             <div class="field">
               <input class="form-control mb-3" id="reservedHour" formControlName="reservedHour" value="{{reservedHour}}"
-                type="text" placeholder="Booking a hour" disabled="true"/>
+                type="text" placeholder="Booking a hour" disabled="true" />
+            </div>
+            <div class="field" *ngIf="paymentMethodAccess">
+              <h5>Sum: {{procedure?procedure.price:0}}.00 EUR</h5>
             </div>
             <div class="mt-3 mb-3">
               <span>
