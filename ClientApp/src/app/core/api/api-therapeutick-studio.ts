@@ -89,9 +89,9 @@ export class ApiRequest {
             );
     }
 
-    public getSchedulers(){
+    public getSchedulers(currentDate,hour){
       return  this.http
-            .get<ISchedulerModel[]>(`${environment.url}` + '/api/schedulers');
+            .get<ISchedulerModel[]>(`${environment.url}` + `/api/schedulers/?searchedDate=${currentDate}&hour=${hour}`);
     }
 
 
