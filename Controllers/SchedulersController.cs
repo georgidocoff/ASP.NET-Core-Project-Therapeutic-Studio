@@ -20,9 +20,9 @@
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<SchedulerModel>>> Get(string searchedDate, int hour)
+        public async Task<ActionResult<IEnumerable<SchedulerModel>>> Get(string searchedDate, string hour)
         {
-            var schedulers = await this.schedulerService.GetSchedulers(searchedDate, hour);
+            var schedulers = await this.schedulerService.GetSchedulers(searchedDate, int.Parse(hour));
             return this.Ok(schedulers);
         }
 

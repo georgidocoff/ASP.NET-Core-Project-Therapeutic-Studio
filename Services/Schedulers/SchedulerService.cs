@@ -11,18 +11,18 @@
     using TherapeuticStudio.Data;
     using TherapeuticStudio.Data.Entity;
 
-    public class Schedulerervice : ISchedulerService
+    public class SchedulerService : ISchedulerService
     {
-        private ApplicationDbContext applicationDbContext;
+        private readonly ApplicationDbContext applicationDbContext;
 
-        public Schedulerervice(ApplicationDbContext applicationDbContext)
+        public SchedulerService(ApplicationDbContext applicationDbContext)
         {
             this.applicationDbContext = applicationDbContext;
         }
 
         public async Task<SchedulerModel> CreateScheduler(SchedulerModel schedulerModel)
         {
-            var currDate = DateTime.ParseExact(schedulerModel.TimeStamp,"R",CultureInfo.InvariantCulture,System.Globalization.DateTimeStyles.None);
+            var currDate = DateTime.ParseExact(schedulerModel.TimeStamp, "R", CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None);
 
             var scheduler = new Scheduler()
             {
@@ -60,20 +60,27 @@
 
         public async Task<IEnumerable<SchedulerModel>> GetSchedulers(string searchedDate, int hour)
         {
-            if (searchedDate != null)
+            if (searchedDate != "null")
             {
+                var currentYear = convertDatePart(searchedDate).Year;
+                var currentMonth = convertDatePart(searchedDate).Month;
+                var currentDay = convertDatePart(searchedDate).Day;
+
                 return await applicationDbContext.Schedulers
                 .Select(SchedulerModel.ProjectTo())
-                .Where(d => (DateTime.Parse(d.TimeStamp)).Year == (DateTime.Parse(searchedDate)).Year)
-                .Where(d => (DateTime.Parse(d.TimeStamp)).Month == (DateTime.Parse(searchedDate)).Month)
-                .Where(d => (DateTime.Parse(d.TimeStamp)).Day == (DateTime.Parse(searchedDate)).Day)
-                .Where(t => (hour == 0 ? true : (DateTime.Parse(t.TimeStamp)).Hour == hour))
+                //.Where(d => d.TimeStamp == $"{currentYear}-{currentMonth}-{currentDay}")
+                .Where(t => (hour == 0 ? true : convertDatePart(t.TimeStamp).Hour == hour))
                 .ToListAsync();
             }
 
             return await applicationDbContext.Schedulers
                 .Select(SchedulerModel.ProjectTo())
                 .ToListAsync();
+        }
+
+        private DateTime convertDatePart(string dateElement)
+        {
+            return (DateTime.ParseExact(dateElement, "R", CultureInfo.InvariantCulture));
         }
 
         public async Task<SchedulerModel> UpdateScheduler(SchedulerModel schedulerModel, Guid id)
@@ -84,12 +91,9 @@
             {
                 scheduler.Id = schedulerModel.Id;
             }
-            else if (schedulerModel.TimeStamp != string.Empty)
+            else if (schedulerModel.TimeStamp != null)
             {
-                scheduler.TimeStamp = DateTime.ParseExact(schedulerModel.TimeStamp
-                    , "O"
-                    , CultureInfo.InvariantCulture
-                    , System.Globalization.DateTimeStyles.None);
+                scheduler.TimeStamp = DateTime.ParseExact(schedulerModel.TimeStamp, "R", CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None);
             }
             else if (schedulerModel.ClientId != Guid.Empty)
             {
@@ -99,7 +103,7 @@
             {
                 scheduler.TherapistId = schedulerModel.TherapistId;
             }
-            else if (schedulerModel.ProcedureId <=0)
+            else if (schedulerModel.ProcedureId <= 0)
             {
                 scheduler.ProcedureId = schedulerModel.ProcedureId;
             }

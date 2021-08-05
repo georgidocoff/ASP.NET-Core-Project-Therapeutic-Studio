@@ -35,7 +35,7 @@
             return scheduler => new SchedulerModel
             {
                 Id = scheduler.Id,
-                TimeStamp = scheduler.TimeStamp.ToString("O"),
+                TimeStamp = scheduler.TimeStamp.ToString("R"),
                 TherapistId = scheduler.TherapistId,
                 ClientId = scheduler.ClientId,
                 ProcedureId = scheduler.ProcedureId,
