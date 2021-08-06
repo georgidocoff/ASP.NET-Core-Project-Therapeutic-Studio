@@ -12,10 +12,10 @@
 
 <div *ngIf="(isAuthenticated && show)">
   <div class="mb-2">
-    <button type="button" class="btn btn-info">
-      < </button> <button type="button" class="btn btn-info"> >
+    <button type="button" class="btn btn-info" (click)="changeDate(-1)">
+      < </button> <button type="button" class="btn btn-info" (click)="changeDate(1)"> >
     </button>
-    <button type="button" class="btn btn-info"> today </button>
+    <button type="button" class="btn btn-info" (click)="currentDay()" [disabled]="isCurrentDayToday"> today </button>
 
     <span style="size: 16;" class="nav justify-content-end">
       {{currentDate}}

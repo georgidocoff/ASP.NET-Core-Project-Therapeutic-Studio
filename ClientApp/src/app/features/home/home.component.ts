@@ -38,6 +38,7 @@ export class HomeComponent {
   show: boolean = true;
   showDialogDropdown: boolean = true;
 
+  isCurrentDayToday: boolean = true;
   currentDate: any;
   searchDate = new Date;
   workHours: any[];
@@ -75,8 +76,7 @@ export class HomeComponent {
     });
 
     this.isAuthenticated = false;
-    this.currentDate = this.createCurrentDate(new Date()).toLocaleDateString();
-    //console.log(this.currentDate);
+    this.currentDate = this.createCurrentDate(this.searchDate).toLocaleDateString();
 
     this.user = JSON.parse(this.storage.getUser());
     this.isAuthenticated = this.user != null;
@@ -101,7 +101,29 @@ export class HomeComponent {
         this.clients = data;
       });
 
-    this.getScheduler(new Date(), 0);
+    this.getScheduler(this.searchDate, 0);
+  }
+
+  private changeDate(modifier: number): void {
+    this.searchDate.setDate(this.searchDate.getDate() + modifier);
+    this.currentDate = this.createCurrentDate(this.searchDate).toLocaleDateString();
+
+    if (this.searchDate.getDate() == new Date().getDate()) {
+      this.isCurrentDayToday = true;
+    } else {
+      this.isCurrentDayToday = false;
+    }
+
+
+    this.createWorkHours();
+  }
+
+  private currentDay(): void {
+    this.isCurrentDayToday = true;
+    this.searchDate = new Date;
+    this.currentDate = this.createCurrentDate(this.searchDate).toLocaleDateString();
+
+    this.createWorkHours();
   }
 
   private searchClients(): string[] {
@@ -143,7 +165,7 @@ export class HomeComponent {
       .subscribe(data => {
         //console.log(data);
 
-        this.getScheduler(new Date(), 0);
+        this.getScheduler(this.searchDate, 0);
         this.createWorkHours();
       });
 
@@ -217,7 +239,7 @@ export class HomeComponent {
   }
 
   private changeProcedure(): void {
-    console.log(this.getProcedureName(this.form.value.currProcedure));
+    this.procedure = this.getProcedureName(this.form.value.currProcedure);
   }
 
   private getProcedureName(name: string): IProcedureModel {
