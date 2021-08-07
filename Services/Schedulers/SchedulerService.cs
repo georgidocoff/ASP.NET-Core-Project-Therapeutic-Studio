@@ -112,7 +112,10 @@
             {
                 scheduler.PaymentType = schedulerModel.PaymentType;
             }
-
+            if (schedulerModel.PaymentId != Guid.Empty)
+            {
+                scheduler.PaymentId = schedulerModel.PaymentId;
+            }
             this.applicationDbContext.Schedulers.Update(scheduler);
 
             await this.applicationDbContext.SaveChangesAsync();

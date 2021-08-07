@@ -9,7 +9,7 @@
     {
         public Guid Id { get; set; }
 
-        public PaymentType PaymentType { get; set; }
+        public int PaymentType { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
