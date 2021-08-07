@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 
 import { Infrastructure } from '../../../shared/infrastructure';
 import { ApiRequest } from '../../../core/api/api-therapeutick-studio';
-import { TherapistModel } from 'src/app/shared/Models/TherapistModel';
+import { TherapistsService } from 'src/app/core/services/therapists.service';
 
 @Component({
   selector: 'app-manage',
   templateUrl: './manage.component.html',
   styleUrls: ['./manage.component.css'],
-  providers: [Infrastructure, ApiRequest]
+  providers: [Infrastructure, ApiRequest,TherapistsService]
 })
 export class ManageComponent implements OnInit {
   therapists: ITherapistModel[];
@@ -17,7 +17,7 @@ export class ManageComponent implements OnInit {
 
   constructor(
     private infrastructure: Infrastructure,
-    private apiRequest: ApiRequest,
+    private therapistsService: TherapistsService,
   ) { }
 
   ngOnInit() {
@@ -25,7 +25,7 @@ export class ManageComponent implements OnInit {
 
     this.roles = this.infrastructure.roles;
 
-    this.apiRequest.getTherapist().subscribe(res => {
+    this.therapistsService.getTherapists().subscribe(res => {
       this.therapists = res;
     });
   }

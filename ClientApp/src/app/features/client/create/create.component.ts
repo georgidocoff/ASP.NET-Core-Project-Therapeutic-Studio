@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { ClientsService } from 'src/app/core/services/clients.service';
 
 import { ApiRequest } from '../../../core/api/api-therapeutick-studio';
 import { ClientModel } from '../../../shared/Models/ClientModel';
@@ -8,14 +9,14 @@ import { ClientModel } from '../../../shared/Models/ClientModel';
   selector: 'app-create',
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.css'],
-  providers: [ApiRequest]
+  providers: [ApiRequest, ClientsService]
 })
 export class CreateComponent implements OnInit {
   form: FormGroup;
 
   constructor(
     private fb: FormBuilder,
-    private apiRequest: ApiRequest,
+    private clientsService: ClientsService,
   ) { }
 
   ngOnInit() {
@@ -34,9 +35,9 @@ export class CreateComponent implements OnInit {
     currClient.lastName = this.form.value.lastName;
     currClient.ucn = this.form.value.ucn;
 
-    this.apiRequest.createClient(currClient)
-      .subscribe(res => {
-        //console.log(res);
+    this.clientsService.createClient(currClient)
+      .subscribe(data=>{
+        
       });
 
     this.form.reset();

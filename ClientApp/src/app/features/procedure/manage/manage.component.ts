@@ -1,24 +1,25 @@
 import { Component, OnInit } from '@angular/core';
-
-import { ApiRequest } from '../../../core/api/api-therapeutick-studio';
+import { ApiRequest } from 'src/app/core/api/api-therapeutick-studio';
+import { ProceduresService } from 'src/app/core/services/procedures.service';
 
 @Component({
   selector: 'app-manage',
   templateUrl: './manage.component.html',
   styleUrls: ['./manage.component.css'],
-  providers: [ApiRequest]
+  providers: [ApiRequest, ProceduresService]
 })
 export class ManageComponent implements OnInit {
   procedures: IProcedureModel[];
 
   constructor(
-    private apiRequest: ApiRequest,
+    private proceduresService: ProceduresService,
   ) { }
 
   ngOnInit() {
-    this.apiRequest.getProcedures().subscribe(res => {
-      this.procedures = res;
-    });
+    this.proceduresService.getProcedures()
+      .subscribe(res => {
+        this.procedures = res;
+      });
   }
 
 }

@@ -1,21 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { ApiRequest } from 'src/app/core/api/api-therapeutick-studio';
 
-import { ApiRequest } from '../../../core/api/api-therapeutick-studio';
+import { ProceduresService } from 'src/app/core/services/procedures.service';
 import { ProcedureModel } from '../../../shared/Models/ProcedureModel';
 
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.css'],
-  providers: [ApiRequest]
+  providers: [ApiRequest, ProceduresService]
 })
 export class CreateComponent implements OnInit {
   form: FormGroup;
 
   constructor(
     private fb: FormBuilder,
-    private apiRequest: ApiRequest,
+    private proceduresService:ProceduresService,
   ) { }
 
   ngOnInit() {
@@ -32,10 +33,10 @@ export class CreateComponent implements OnInit {
     currProcedure.duration = this.form.value.duration;
     currProcedure.price = this.form.value.price;
 
-    this.apiRequest.createProcedure(currProcedure)
-      .subscribe(res => {
-        //console.log(res);
-      });
+    this.proceduresService.createProcedure(currProcedure)
+    .subscribe(res => {
+      
+    });
 
     this.form.reset();
   }

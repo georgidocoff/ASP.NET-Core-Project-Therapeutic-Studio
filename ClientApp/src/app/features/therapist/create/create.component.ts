@@ -4,12 +4,13 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { Infrastructure } from '../../../shared/infrastructure';
 import { ApiRequest } from '../../../core/api/api-therapeutick-studio';
 import { TherapistModel } from '../../../shared/Models/TherapistModel';
+import { TherapistsService } from 'src/app/core/services/therapists.service';
 
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.css'],
-  providers: [Infrastructure, TherapistModel,ApiRequest]
+  providers: [Infrastructure, TherapistModel, ApiRequest, TherapistsService]
 })
 
 export class CreateComponent implements OnInit {
@@ -20,7 +21,7 @@ export class CreateComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private infrastructure: Infrastructure,
-    private apiRequest: ApiRequest,
+    private therapistsService: TherapistsService,
   ) { }
 
   ngOnInit() {
@@ -38,7 +39,6 @@ export class CreateComponent implements OnInit {
   }
 
   onSubmit() {
-    //console.log(this.form.value);
     let currTherapist = new TherapistModel;
     currTherapist.firstName = this.form.value.firstName;
     currTherapist.middleName = this.form.value.middleName;
@@ -46,9 +46,9 @@ export class CreateComponent implements OnInit {
     currTherapist.positionType = +this.form.value.positionType;
     currTherapist.roleType = +this.form.value.roleType;
 
-    this.apiRequest.createTherapist(currTherapist)
+    this.therapistsService.createTherapist(currTherapist)
       .subscribe(res => {
-        //console.log(res);
+        
       });
 
     this.form.reset();
