@@ -36,9 +36,11 @@ export class ClientsService {
   }
 
   public getClientId(clientFullName: string, clients: IClientModel[]): string {
+
     const fullName = clientFullName.split(' ');
     const firstName = fullName[0];
     const lastName = fullName[fullName.length - 1];
+    
     let middleName = null;
     if (fullName.length > 2) {
       middleName = fullName[1];
@@ -49,7 +51,7 @@ export class ClientsService {
         && x.lastName == lastName
         && x.middleName == middleName));
 
-    return result.id;
+    return result ? result.id : '';
   }
 
   public createClient(currClient: IClientModel): Observable<IClientModel> {
