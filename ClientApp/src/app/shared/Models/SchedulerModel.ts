@@ -5,4 +5,5 @@ export class SchedulerModel implements ISchedulerModel{
     procedureId: number;
     paymentType: number;
     paymentId: string;
+    id?:string;
 }

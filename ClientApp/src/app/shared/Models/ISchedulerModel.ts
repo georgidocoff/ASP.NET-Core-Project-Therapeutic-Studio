@@ -5,4 +5,5 @@ interface ISchedulerModel {
     procedureId:number,
     paymentType:number,
     paymentId :string,
+    id?:string,
 }
