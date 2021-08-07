@@ -15,6 +15,8 @@ import { TherapistModel } from 'src/app/shared/Models/TherapistModel';
 import { ProceduresService } from 'src/app/core/services/procedures.service';
 import { TherapistsService } from 'src/app/core/services/therapists.service';
 import { ClientsService } from 'src/app/core/services/clients.service';
+import { PaymentsService } from 'src/app/core/services/payments.service';
+import { PaymentModel } from 'src/app/shared/Models/PaymentModel';
 
 
 @Component({
@@ -30,6 +32,7 @@ import { ClientsService } from 'src/app/core/services/clients.service';
     ProceduresService,
     TherapistsService,
     ClientsService,
+    PaymentsService,
   ]
 })
 
@@ -44,6 +47,7 @@ export class HomeComponent {
   isUnpaid: boolean = false;
   isCashDeskPaid: boolean = false;
   isBankPaid: boolean = false;
+  payment: IPaymentModel;
 
   show: boolean = true;
   showDialogDropdown: boolean = true;
@@ -75,6 +79,7 @@ export class HomeComponent {
     private proceduresService: ProceduresService,
     private therapistsService: TherapistsService,
     private clientsService: ClientsService,
+    private paymentsService: PaymentsService,
     private constants: AppConstants,
     private fb: FormBuilder,
   ) { }
@@ -95,10 +100,6 @@ export class HomeComponent {
     this.user = JSON.parse(this.storage.getUser());
     this.isAuthenticated = this.user != null;
 
-    // this.apiRequest.getTherapist()
-    //   .subscribe(data => {
-    //     this.therapists = data;
-    //   });
     this.therapistsService.getTherapists()
       .subscribe(data => {
         this.therapists = data;
@@ -106,21 +107,11 @@ export class HomeComponent {
 
     this.createWorkHours();
 
-    // this.apiRequest.getProcedures()
-    //   .subscribe(data => {
-    //     this.procedures = data;
-    //     this.procedures.unshift({ name: 'Select Procedure:' } as ProcedureModel);
-    //   });
     this.proceduresService.getProcedures()
       .subscribe(data => {
         this.procedures = data;
         this.procedures.unshift({ name: 'Select Procedure:' } as ProcedureModel);
       });
-
-    // this.apiRequest.getClients()
-    //   .subscribe(data => {
-    //     this.clients = data;
-    //   });
 
     this.clientsService.getClients()
       .subscribe(data => {
@@ -174,8 +165,9 @@ export class HomeComponent {
         : this.form.value.clientFullName
       , this.clients);
     currentScheduler.therapistId = this.therapistsService.getTherapistId(therapistFullName, this.therapists);
-    currentScheduler.paymentType = this.paymentType;
-    
+    currentScheduler.paymentType = this.form.value.paymentType ? this.form.value.paymentType : 0;
+
+    console.log(this.paymentType);
     if (!this.paymentMethodAccess) {
       this.apiRequest.createScheduler(currentScheduler)
         .subscribe(data => {
@@ -185,17 +177,26 @@ export class HomeComponent {
         });
 
     } else {
-      console.log(this.form.value.paymentType);
+      this.payment = new PaymentModel;
+      this.payment.clientId = currentScheduler.clientId;
+      this.payment.createAt = new Date;
+      this.payment.type = currentScheduler.paymentType;
+      this.payment.price = this.procedure.price;
 
-      this.apiRequest.updateScheduler(this.scheduler.id, currentScheduler)
+      this.paymentsService.createPayment(this.payment, this.scheduler.id)
         .subscribe(data => {
 
-          this.getScheduler(this.searchDate, 0);
+          data ? currentScheduler.paymentId = data.id : null;
 
-          this.createWorkHours();
-        });
+          this.apiRequest.updateScheduler(this.scheduler.id, currentScheduler)
+            .subscribe(data => {
+
+              this.getScheduler(this.searchDate, 0);
+
+              this.createWorkHours();
+            });
+        })
     }
-
 
     this.form.reset();
   }
@@ -235,36 +236,9 @@ export class HomeComponent {
     return dataToView;
   }
 
-  // private getClientId(clientFullName): string {
-  //   const fullName = clientFullName.split(' ');
-  //   const firstName = fullName[0];
-  //   const lastName = fullName[fullName.length - 1];
-  //   let middleName = null;
-  //   if (fullName.length > 2) {
-  //     middleName = fullName[1];
-  //   }
-  //   const result = this.clients
-  //     .find(x => (x.firstName == firstName
-  //       && x.lastName == lastName
-  //       && x.middleName == middleName));
-  //   return result.id;
-  // }
-
   private getClientId(clientFullName: string): string {
     return this.clientsService.getClientId(clientFullName, this.clients);
   }
-  // private getTherapistId(therapistFullName): number {
-  //   let addedTherapist = therapistFullName.split(' ');
-  //   let currentTherapist = new TherapistModel as ITherapistModel;
-  //   currentTherapist.firstName = addedTherapist[0];
-  //   currentTherapist.lastName
-  //   let therapistId = this.therapists.find(x =>
-  //   ((x.firstName == addedTherapist[0]) &&
-  //     (x.lastName == addedTherapist[addedTherapist.length - 1]) &&
-  //     (addedTherapist.length > 2 ? x.middleName == addedTherapist[1] : true))).id;
-
-  //   return therapistId;
-  // }
 
   private selectTherapist(therapist, workHour, event): void {
     this.clientFullName = '';
@@ -294,9 +268,7 @@ export class HomeComponent {
           && (x.timeStamp == this.reservedHour)
           && (x.therapistId == this.therapistsService.getTherapistId(this.therapistFullName, this.therapists)));
 
-      this.form.value.paymentType = this.scheduler ? this.scheduler.paymentType : this.paymentType;
-
-      switch (this.form.value.paymentType) {
+      switch (this.scheduler ? this.scheduler.paymentType : this.paymentType) {
         case 0:
           this.isUnpaid = true;
           this.isCashDeskPaid = false;
@@ -316,12 +288,11 @@ export class HomeComponent {
           this.paymentType = 2;
           break;
         default:
-          this.isUnpaid = true;
-          this.isCashDeskPaid = false;
-          this.isBankPaid = false;
-          this.paymentType = 0;
-          break;
+          throw Error('The payment type is invalid.')
       }
+
+      console.log(this.paymentType);
+
     }
 
   }
@@ -331,15 +302,10 @@ export class HomeComponent {
       .getProcedureName(this.form.value.currProcedure, this.procedures);
   }
 
-  // private getProcedureName(name: string): IProcedureModel {
-  //   return this.procedures.find(x => x.name == name);;
-  // }
-
-
   private getScheduler(date, hour): void {
     this.apiRequest.getSchedulers(date.toUTCString(), hour)
       .subscribe(data => {
-        //console.log(data);
+
         this.schedulers = data;
       });
   }
@@ -362,7 +328,6 @@ export class HomeComponent {
   }
 
   private createTableDate(current = new Date, index) {
-    // console.log(current);
     return new Date(current.getUTCFullYear(),
       current.getUTCMonth(),
       current.getUTCDate(),
