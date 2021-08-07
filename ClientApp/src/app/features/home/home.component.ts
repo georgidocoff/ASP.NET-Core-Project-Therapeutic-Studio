@@ -12,6 +12,7 @@ import { TypeaheadConfig } from 'ngx-bootstrap/typeahead';
 import { BsDropdownConfig, BsDropdownDirective } from 'ngx-bootstrap/dropdown';
 import { SchedulerModel } from 'src/app/shared/Models/SchedulerModel';
 import { TherapistModel } from 'src/app/shared/Models/TherapistModel';
+import { ClientModel } from 'src/app/shared/Models/ClientModel';
 
 
 @Component({
@@ -34,6 +35,10 @@ export class HomeComponent {
   isAuthenticated: boolean;
 
   paymentMethodAccess: boolean = false;
+  paymentType: number = 0;
+  isUnpaid: boolean = false;
+  isCashDeskPaid: boolean = false;
+  isBankPaid: boolean = false;
 
   show: boolean = true;
   showDialogDropdown: boolean = true;
@@ -73,6 +78,7 @@ export class HomeComponent {
       currProcedure: [null],
       therapistFullName: [null],
       reservedHour: [null],
+      paymentType: [null],
     });
 
     this.isAuthenticated = false;
@@ -133,6 +139,7 @@ export class HomeComponent {
       let client = this.clients[i];
 
       //TODO find better way to remove clinet middleName null value
+
       if (client.middleName != null) {
         client.fullName = client.firstName + ' ' + client.middleName + ' ' + client.lastName;
       } else {
@@ -141,7 +148,6 @@ export class HomeComponent {
       clientsExtend.push(client.fullName);
     }
 
-    // this.filteredClient = filtered;
     return clientsExtend;
   }
 
@@ -154,20 +160,37 @@ export class HomeComponent {
     this.show = !this.show;
     let currentScheduler = new SchedulerModel;
     currentScheduler.timeStamp = reservedHour;
-    currentScheduler.procedureId = this.procedures.find(x => x.name == this.form.value.currProcedure).id;
-    currentScheduler.clientId = this.clients.find(x => x.fullName == this.form.value.clientFullName).id;
+    currentScheduler.procedureId = !this.procedure
+      ? this.procedures.find(x => x.name == this.form.value.currProcedure).id
+      : this.procedure.id;
+    currentScheduler.clientId = this.getClientId(
+      !this.form.value.clientFullName
+        ? this.clientFullName
+        : this.form.value.clientFullName);
     currentScheduler.therapistId = this.getTherapistId(therapistFullName);
+    currentScheduler.paymentType = this.form.value.paymentType;
 
-    currentScheduler.paymentType = 0;
-    //console.log(currentScheduler);
+    // console.log(this.form.value.paymentType);
+    // console.log(this.scheduler);
 
-    this.apiRequest.createScheduler(currentScheduler)
-      .subscribe(data => {
-        //console.log(data);
+    if (!this.paymentMethodAccess) {
+      this.apiRequest.createScheduler(currentScheduler)
+        .subscribe(data => {
+          this.getScheduler(this.searchDate, 0);
 
-        this.getScheduler(this.searchDate, 0);
-        this.createWorkHours();
-      });
+          this.createWorkHours();
+        });
+
+    } else {
+      this.apiRequest.updateScheduler(this.scheduler.id, currentScheduler)
+        .subscribe(data => {
+
+          this.getScheduler(this.searchDate, 0);
+
+          this.createWorkHours();
+        });
+    }
+
 
     this.form.reset();
   }
@@ -193,13 +216,33 @@ export class HomeComponent {
           let clientIndex = this.clients.findIndex(c => c.id == scheduler.clientId);
           let procedureIndex = this.procedures.findIndex(x => x.id == scheduler.procedureId);
 
-          this.clientToView = `${this.clients[clientIndex].firstName} ${this.clients[clientIndex].lastName} - ${this.procedures[procedureIndex].name}`;
+          const secondNamePartToView = this.clients[clientIndex].middleName
+            ? this.clients[clientIndex].middleName + ' ' + this.clients[clientIndex].lastName
+            : this.clients[clientIndex].lastName;
+
+          this.clientToView = `${this.clients[clientIndex].firstName} ${secondNamePartToView} - ${this.procedures[procedureIndex].name}`;
+
           dataToView = true;;
         }
       });
 
     }
     return dataToView;
+  }
+
+  private getClientId(clientFullName): string {
+    const fullName = clientFullName.split(' ');
+    const firstName = fullName[0];
+    const lastName = fullName[fullName.length - 1];
+    let middleName = null;
+    if (fullName.length > 2) {
+      middleName = fullName[1];
+    }
+    const result = this.clients
+      .find(x => (x.firstName == firstName
+         && x.lastName == lastName
+         && x.middleName == middleName));
+    return result.id;
   }
 
   private getTherapistId(therapistFullName): number {
@@ -216,10 +259,6 @@ export class HomeComponent {
   }
 
   private selectTherapist(therapist, workHour, event): void {
-    // console.log(therapist);
-    // console.log(workHour);
-    // console.log(event.target.innerText);
-
     this.clientFullName = '';
     this.procedure = null;
     this.paymentMethodAccess = false;
@@ -231,9 +270,55 @@ export class HomeComponent {
     this.showDialogDropdown = !this.showDialogDropdown;
 
     if (dtData.length == 2) {
+
       this.paymentMethodAccess = true;
       this.procedure = this.getProcedureName(dtData[1]);
       this.clientFullName = dtData[0];
+      this.form.value.clientFullName = this.clientFullName;
+      this.form.value.currProcedure = this.procedure.name;
+      this.form.value.therapistFullName = this.therapistFullName;
+      this.form.value.reservedHour = this.reservedHour;
+      const clientId = this.getClientId(this.clientFullName);
+
+      this.scheduler = this.schedulers
+        .find(x =>
+          (x.clientId == clientId)
+          && (x.timeStamp == this.reservedHour)
+          && (x.therapistId == this.getTherapistId(this.therapistFullName)));
+
+      this.form.value.paymentType = this.scheduler ? this.scheduler.paymentType : this.paymentType;
+
+      switch (this.form.value.paymentType) {
+        case 0:
+          this.isUnpaid = true;
+          this.isCashDeskPaid = false;
+          this.isBankPaid = false;
+          //console.log(this.form.value.paymentType);
+
+          break;
+        case 1:
+          this.isUnpaid = false;
+          this.isCashDeskPaid = true;
+          this.isBankPaid = false;
+          //console.log(this.form.value.paymentType);
+          break;
+        case 2:
+          this.isUnpaid = false;
+          this.isCashDeskPaid = false;
+          this.isBankPaid = true;
+          //console.log(this.form.value.paymentType);
+          break;
+        default:
+          this.isUnpaid = true;
+          this.isCashDeskPaid = false;
+          this.isBankPaid = false;
+          //console.log(this.form.value.paymentType);
+          break;
+      }
+      //console.log(this.scheduler);
+
+      //console.log(this.form.value.clientFullName);
+
     }
 
   }
@@ -249,7 +334,7 @@ export class HomeComponent {
   private getScheduler(date, hour): void {
     this.apiRequest.getSchedulers(date.toUTCString(), hour)
       .subscribe(data => {
-        console.log(data);
+        //console.log(data);
         this.schedulers = data;
       });
   }
