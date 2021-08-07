@@ -58,7 +58,7 @@ export class ApiRequest {
         let httpOptions = {
             headers: new HttpHeaders({ 'Content-Type': 'application/json' })
         };
-        
+
         return this.http
             .post<any>(environment.url + '/api/clients', client, httpOptions)
             .pipe(
@@ -69,8 +69,8 @@ export class ApiRequest {
             );
     }
 
-    public getClients(){
-      return  this.http
+    public getClients() {
+        return this.http
             .get<IClientModel[]>(`${environment.url}` + '/api/clients');
     }
 
@@ -78,7 +78,7 @@ export class ApiRequest {
         let httpOptions = {
             headers: new HttpHeaders({ 'Content-Type': 'application/json' })
         };
-        
+
         return this.http
             .post<any>(environment.url + '/api/schedulers', scheduler, httpOptions)
             .pipe(
@@ -89,10 +89,22 @@ export class ApiRequest {
             );
     }
 
-    public getSchedulers(currentDate,hour){
-      return  this.http
+    public getSchedulers(currentDate, hour) {
+        return this.http
             .get<ISchedulerModel[]>(`${environment.url}` + `/api/schedulers/?searchedDate=${currentDate}&hour=${hour}`);
     }
 
+    public updateScheduler(id: string, schedulerModel: ISchedulerModel): Observable<ISchedulerModel> {
+        let httpOptions = {
+            headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+        };
 
+        return this.http.patch<ISchedulerModel>(`${environment.url}` + `/api/schedulers/update/${id}`,schedulerModel, httpOptions)
+            .pipe(
+                tap((schedulerModel: any) =>
+                    console.log(`update scheduler = ${id}`
+                    )),
+                catchError(async () => console.error())
+            );
+    }
 }
