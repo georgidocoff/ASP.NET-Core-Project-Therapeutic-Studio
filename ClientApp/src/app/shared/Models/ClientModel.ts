@@ -4,4 +4,5 @@ export class ClientModel implements IClientModel {
     middleName: string;
     lastName: string;
     ucn: string;
+    fullName?:string;
 }
