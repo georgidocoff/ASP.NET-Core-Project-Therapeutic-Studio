@@ -15,6 +15,7 @@ import { FeaturesModule } from './features/features.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { ApiRequest } from './core/api/api-therapeutick-studio';
 
 @NgModule({
   declarations: [
@@ -32,11 +33,12 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     BsDropdownModule.forRoot(),
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'features', loadChildren: () => import('./features/features.module').then(m=>m.FeaturesModule), canActivate: [AuthorizeGuard] },
+      { path: 'features', loadChildren: () => import('./features/features.module').then(m => m.FeaturesModule), canActivate: [AuthorizeGuard] },
     ])
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true },
+    { provide: ApiRequest, useClass: ApiRequest, multi: true }
   ],
   bootstrap: [AppComponent]
 })
