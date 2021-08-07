@@ -31,6 +31,7 @@
                 TherapistId = schedulerModel.TherapistId,
                 ClientId = schedulerModel.ClientId,
                 ProcedureId = schedulerModel.ProcedureId,
+                PaymentType = schedulerModel.PaymentType
             };
 
             this.applicationDbContext.Schedulers.Add(scheduler);
@@ -91,23 +92,26 @@
             {
                 scheduler.Id = schedulerModel.Id;
             }
-            else if (schedulerModel.TimeStamp != null)
+            if (schedulerModel.TimeStamp != null)
             {
                 scheduler.TimeStamp = DateTime.ParseExact(schedulerModel.TimeStamp, "R", CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None);
             }
-            else if (schedulerModel.ClientId != Guid.Empty)
+            if (schedulerModel.ClientId != Guid.Empty)
             {
                 scheduler.ClientId = schedulerModel.ClientId;
             }
-            else if (schedulerModel.TherapistId <= 0)
+            if (schedulerModel.TherapistId >= 0)
             {
                 scheduler.TherapistId = schedulerModel.TherapistId;
             }
-            else if (schedulerModel.ProcedureId <= 0)
+            if (schedulerModel.ProcedureId >= 0)
             {
                 scheduler.ProcedureId = schedulerModel.ProcedureId;
             }
-
+            if (schedulerModel.PaymentType >= 0)
+            {
+                scheduler.PaymentType = schedulerModel.PaymentType;
+            }
 
             this.applicationDbContext.Schedulers.Update(scheduler);
 
