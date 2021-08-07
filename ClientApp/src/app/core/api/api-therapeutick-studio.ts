@@ -99,12 +99,32 @@ export class ApiRequest {
             headers: new HttpHeaders({ 'Content-Type': 'application/json' })
         };
 
-        return this.http.patch<ISchedulerModel>(`${environment.url}` + `/api/schedulers/update/${id}`,schedulerModel, httpOptions)
+        return this.http.patch<ISchedulerModel>(`${environment.url}` + `/api/schedulers/update/${id}`, schedulerModel, httpOptions)
             .pipe(
                 tap((schedulerModel: any) =>
                     console.log(`update scheduler = ${id}`
                     )),
                 catchError(async () => console.error())
             );
+    }
+
+    public createPayment(payment: IPaymentModel, schedulerId: string): Observable<IPaymentModel> {
+        let httpOptions = {
+            headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+        };
+
+        return this.http
+            .post<any>(environment.url + `/api/payments/?schedulerId=${schedulerId}`, payment, httpOptions)
+            .pipe(
+                tap((payment: any) =>
+                    console.log(`added payment = ${payment.id}`
+                    )),
+                catchError(async () => console.error())
+            );
+    }
+
+    public getPayments() {
+        return this.http
+            .get<IPaymentModel[]>(`${environment.url}` + '/api/payments');
     }
 }
