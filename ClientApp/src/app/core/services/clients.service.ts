@@ -40,7 +40,7 @@ export class ClientsService {
     const fullName = clientFullName.split(' ');
     const firstName = fullName[0];
     const lastName = fullName[fullName.length - 1];
-    
+
     let middleName = null;
     if (fullName.length > 2) {
       middleName = fullName[1];
@@ -56,5 +56,9 @@ export class ClientsService {
 
   public createClient(currClient: IClientModel): Observable<IClientModel> {
     return this.apiRequest.createClient(currClient);
+  }
+
+  public deleteClient(clientId: string):void{
+    this.apiRequest.deleteClient(clientId);
   }
 }
