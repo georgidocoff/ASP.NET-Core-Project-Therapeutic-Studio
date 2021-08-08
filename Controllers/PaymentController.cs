@@ -3,6 +3,7 @@
     using Microsoft.AspNetCore.Mvc;
 
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using TherapeuticStudio.Services.Payments;
@@ -23,11 +24,6 @@
         {
             try
             {
-                if (paymentModel.Type == 0)
-                {
-                    return this.NoContent();
-                }
-
                 var payment = await this.paymentService.CreatePayment(paymentModel, schedulerId);
                 return this.Ok(payment);
             }
@@ -36,5 +32,13 @@
                 return this.BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("date")]
+        public async Task<ActionResult<IEnumerable<PaymentModel>>> GetDates(string current)
+        {
+            var payments = await this.paymentService.GetPaymentsByDate(current);
+            return this.Ok(payments);
+        }
+
     }
 }
