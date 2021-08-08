@@ -58,7 +58,11 @@ export class ClientsService {
     return this.apiRequest.createClient(currClient);
   }
 
-  public deleteClient(clientId: string):void{
+  public updateClient(id: string, client: IClientModel) {
+    return this.apiRequest.updateClient(id,client);
+  }
+
+  public deleteClient(clientId: string): void {
     this.apiRequest.deleteClient(clientId);
   }
 }
