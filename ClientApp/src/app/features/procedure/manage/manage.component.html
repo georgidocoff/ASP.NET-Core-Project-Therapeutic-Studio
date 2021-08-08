@@ -1,18 +1,51 @@
-<table class="table table-striped">
+<div *ngIf="!isManageDialog">
+  <table class="table table-striped">
     <thead>
-    <tr>
-      <th scope="col">No</th>
-      <th scope="col">Name</th>
-      <th scope="col">Duration</th>
-      <th scope="col">Price</th>
-    </tr>
+      <tr>
+        <th scope="col">No</th>
+        <th scope="col">Name</th>
+        <th scope="col">Duration</th>
+        <th scope="col">Price</th>
+        <th scope="col">Buttons</th>
+      </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let procedure of procedures; index as i">
-      <th scope="row">{{ i + 1 }}</th>
-      <td>{{ procedure.name }}</td>
-      <td>{{ procedure.duration }} min.</td>
-      <td>{{ procedure.price }}.00 eur</td>
-    </tr>
+      <tr *ngFor="let procedure of procedures; index as i">
+        <th scope="row">{{ i + 1 }}</th>
+        <td>{{ procedure.name }}</td>
+        <td>{{ procedure.duration }} min.</td>
+        <td>{{ procedure.price }}.00 EUR</td>
+        <td>
+          <input type="button" value="edit" class="btn btn-success mr-2" (click)="editProcedure(procedure)" />
+          <input type="button" value="del." class="btn btn-warning" (click)="deleteProcedure(procedure,i)" />
+        </td>
+      </tr>
     </tbody>
   </table>
+</div>
+
+<div *ngIf="isManageDialog">
+  <div class="card">
+    <h5 class="m-0">Procedure:</h5>
+    <div class="field col-4">
+      <h3></h3>
+      <div class="flex flex-column flex-md-row">
+        <p>
+          <label for="name" class="grid-m-4">Name : </label>
+          <input class="form-control mb-3" type="text" id="name" [(ngModel)]="procedure.name" required />
+        </p>
+        <p>
+          <label for="duration" class="grid-m-4">Duration : </label>
+          <input class="form-control mb-3" type="number" id="duration" [(ngModel)]="procedure.duration" />
+        </p>
+        <p>
+          <label for="price" class="grid-m-4">Price : </label>
+          <input class="form-control mb-3" type="number" id="price" [(ngModel)]="procedure.price" required />
+        </p>
+      </div>
+      
+        <button class="btn btn-info" (click)="cancel()">Cancel</button>
+        <button class="btn btn-info" (click)="save(procedure)">Save</button>
+      </div>
+    </div>
+  </div>
