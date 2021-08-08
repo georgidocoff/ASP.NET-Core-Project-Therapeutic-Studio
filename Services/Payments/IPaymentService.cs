@@ -12,7 +12,7 @@
 
         Task<IEnumerable<PaymentModel>> GetPayment(Guid id);
 
-        Task<IEnumerable<PaymentModel>> GetPaymentsByDate(string currentDate, string endDate);
+        Task<IEnumerable<PaymentModel>> GetPaymentsByDate(string currentDate);
 
         Task<PaymentModel> UpdatePayment(PaymentModel paymentModel, Guid id);
 

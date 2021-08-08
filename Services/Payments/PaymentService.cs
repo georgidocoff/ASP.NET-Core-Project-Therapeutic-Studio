@@ -1,7 +1,10 @@
 ﻿namespace TherapeuticStudio.Services.Payments
 {
+    using Microsoft.EntityFrameworkCore;
+
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -69,9 +72,23 @@
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<PaymentModel>> GetPaymentsByDate(string currentDate, string endDate)
+        public async Task<IEnumerable<PaymentModel>> GetPaymentsByDate(string currentDate)
         {
-            throw new NotImplementedException();
+            DateTime currDate;
+
+            var isCurrDate = DateTime.TryParseExact(currentDate,
+                "R",
+                CultureInfo.InvariantCulture, DateTimeStyles.None, out currDate);
+
+            if (!isCurrDate)
+            {
+                throw new InvalidCastException("The date is in incorect format.");
+            }
+
+            return await applicationDbContext.Payments
+                .Select(PaymentModel.ProjectTo())
+                .Where(ts => ts.CreateTimeStamp.Value.Date == currDate.Date)
+                .ToListAsync();
         }
 
         public async Task<PaymentModel> UpdatePayment(PaymentModel paymentModel, Guid id)
