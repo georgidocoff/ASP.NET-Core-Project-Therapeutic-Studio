@@ -55,7 +55,7 @@
             return await applicationDbContext.Schedulers
                .Select(SchedulerModel.ProjectTo())
                .Where(s => s.ClientId == clientId)
-               .OrderByDescending(s => s.TimeStamp)
+               //.OrderByDescending(s => s.TimeStamp)
                .ToListAsync();
         }
 
