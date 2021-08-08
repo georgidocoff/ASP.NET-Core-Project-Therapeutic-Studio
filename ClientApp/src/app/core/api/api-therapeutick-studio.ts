@@ -122,7 +122,7 @@ export class ApiRequest {
 
     public getSchedulersClients(clientId:string) {
         return this.http
-            .get<IClientModel[]>(`${environment.url}` + `api/schedulers/clients/?clientId=${clientId}`);
+            .get<ISchedulerModel[]>(`${environment.url}` + `/api/schedulers/client/?clientId=${clientId}`);
     }
 
     public updateScheduler(id: string, schedulerModel: ISchedulerModel): Observable<ISchedulerModel> {
