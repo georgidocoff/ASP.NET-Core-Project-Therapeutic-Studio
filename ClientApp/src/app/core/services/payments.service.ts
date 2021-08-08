@@ -16,4 +16,7 @@ export class PaymentsService {
     return this.apiRequest.createPayment(payment, schedulerId)
   }
 
+  public getPaymentsByDate(current: string): Observable<IPaymentModel[]> {
+    return this.apiRequest.getPaymentsByDate(current);
+  }
 }
