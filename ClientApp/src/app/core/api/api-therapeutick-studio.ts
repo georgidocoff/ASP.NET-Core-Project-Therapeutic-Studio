@@ -34,6 +34,32 @@ export class ApiRequest {
             .get<TherapistModel[]>(`${environment.url}` + '/api/therapists');
     }
 
+    public updateTherapist(id: number, therapistModel: ITherapistModel): Observable<ITherapistModel> {
+        let httpOptions = {
+            headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+        };
+
+        return this.http.patch<ITherapistModel>(`${environment.url}` + `/api/therapists/update/${id}`, therapistModel, httpOptions)
+            .pipe(
+                tap((therapistModel: any) =>
+                    console.log(`update therapist = ${id}`
+                    )),
+                catchError(async () => console.error())
+            );
+    }
+
+    public deleteTherapist(therapistId: number) {
+        this.http.delete(environment.url + `/api/therapists/delete/${therapistId}`)
+            .subscribe({
+                next: data => {
+                    console.log('Delete successful');
+                },
+                error: error => {
+                    console.error('There was an error!', error);
+                }
+            });
+    }
+
     public createProcedure(procedure: IProcedureModel): Observable<IProcedureModel> {
         let httpOptions = {
             headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -52,6 +78,32 @@ export class ApiRequest {
     public getProcedures() {
         return this.http
             .get<ProcedureModel[]>(`${environment.url}` + '/api/procedures');
+    }
+
+    public updateProcedure(id: number, procedureModel: IProcedureModel): Observable<IProcedureModel> {
+        let httpOptions = {
+            headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+        };
+
+        return this.http.patch<IProcedureModel>(`${environment.url}` + `/api/procedures/update/${id}`, procedureModel, httpOptions)
+            .pipe(
+                tap((procedureModel: any) =>
+                    console.log(`update procedure = ${id}`
+                    )),
+                catchError(async () => console.error())
+            );
+    }
+
+    public deleteProcedure(procedureId: number) {
+        this.http.delete(environment.url + `/api/procedures/delete/${procedureId}`)
+            .subscribe({
+                next: data => {
+                    console.log('Delete successful');
+                },
+                error: error => {
+                    console.error('There was an error!', error);
+                }
+            });
     }
 
     public createClient(client: IClientModel): Observable<IClientModel> {
@@ -88,16 +140,16 @@ export class ApiRequest {
             );
     }
 
-    public deleteClient(clientId:string){
+    public deleteClient(clientId: string) {
         this.http.delete(environment.url + `/api/clients/delete/${clientId}`)
-        .subscribe({
-            next: data => {
-                console.log('Delete successful');
-            },
-            error: error => {
-                console.error('There was an error!', error);
-            }
-        });
+            .subscribe({
+                next: data => {
+                    console.log('Delete successful');
+                },
+                error: error => {
+                    console.error('There was an error!', error);
+                }
+            });
     }
 
     public createScheduler(scheduler: ISchedulerModel): Observable<ISchedulerModel> {
@@ -120,7 +172,7 @@ export class ApiRequest {
             .get<ISchedulerModel[]>(`${environment.url}` + `/api/schedulers/?searchedDate=${currentDate}&hour=${hour}`);
     }
 
-    public getSchedulersClients(clientId:string) {
+    public getSchedulersClients(clientId: string) {
         return this.http
             .get<ISchedulerModel[]>(`${environment.url}` + `/api/schedulers/client/?clientId=${clientId}`);
     }
@@ -157,5 +209,10 @@ export class ApiRequest {
     public getPayments() {
         return this.http
             .get<IPaymentModel[]>(`${environment.url}` + '/api/payments');
+    }
+
+    public getPaymentsByDate(current: string) {
+        return this.http
+            .get<IPaymentModel[]>(`${environment.url}` + `/api/payments/date/?current=${current}`);
     }
 }
