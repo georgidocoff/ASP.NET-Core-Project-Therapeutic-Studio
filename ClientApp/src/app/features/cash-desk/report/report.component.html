@@ -1,1 +1,55 @@
-<p>report works!</p>
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <h5 class="mb-3">Cash Desk:</h5>
+
+      <div class="row">
+        <div class="col-xs-12 col-12 col-md-4 form-group">
+          <input type="text" class="form-control" #dp="bsDatepicker" [(ngModel)]="selectedDay" bsDatepicker
+            [bsConfig]="bsConfig" />
+        </div>
+        <div class="col-xs-12 col-12 col-md-3 form-group">
+          <button class="btn btn-info" (click)="toggle()" [attr.aria-expanded]="dp.isOpen" type="button">Get
+            Date</button>
+        </div>
+      </div>
+
+      <div class="p-field">
+        <p>
+          <label class="cash-report" for="unpaid" class="p-grid-m-4">Unpaid: {{unpaid?unpaid:0}}.00 EUR</label>
+          <!-- <input styleClass="p-grid-m-4" type="text" style="width: fit-content;" pInputText id="unpaid"
+    [(ngModel)]="unpaid" disabled /> -->
+        </p>
+        <p>
+          <label for="bank" class="p-grid-m-4">All paid: {{paid?paid:0}}.00 EUR</label>
+          <!-- <input styleClass="p-grid-m-4" type="text" style="width: fit-content;" pInputText id="bank" [(ngModel)]="bank"
+    disabled /> -->
+        </p>
+      </div>
+
+    </div>
+
+    <div *ngIf="payments!=undefined">
+      <div class="flex flex-column flex-md-row jc-md-between table-header">
+        <h5 class="mt-2 mb-2">Time line: </h5>
+      </div>
+
+      <table class="table table-striped">
+        <tr>
+          <th scope="col">No</th>
+          <th scope="col">Time stamp </th>
+          <th scope="col">Payment </th>
+          <th scope="col">Price </th>
+          <th></th>
+        </tr>
+        <tr #dt *ngFor="let payment of payments; index as i">
+          <th scope="row">{{ i + 1 }}</th>
+          <td>{{ payment.updateTimeStamp?payment.updateTimeStamp:payment.createTimeStamp }}</td>
+          <td>{{ payment.type!=0?'paid':'unpaid' }}</td>
+          <td>{{ payment.price?payment.price:0 }}.00 EUR</td>
+        </tr>
+      </table>
+    </div>
+
+  </div>
+</div>
