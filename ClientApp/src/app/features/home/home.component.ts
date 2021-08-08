@@ -100,25 +100,27 @@ export class HomeComponent {
     this.user = JSON.parse(this.storage.getUser());
     this.isAuthenticated = this.user != null;
 
-    this.therapistsService.getTherapists()
-      .subscribe(data => {
-        this.therapists = data;
-      });
+    if (this.isAuthenticated) {
+      this.therapistsService.getTherapists()
+        .subscribe(data => {
+          this.therapists = data;
+        });
 
-    this.createWorkHours();
+      this.createWorkHours();
 
-    this.proceduresService.getProcedures()
-      .subscribe(data => {
-        this.procedures = data;
-        this.procedures.unshift({ name: 'Select Procedure:' } as ProcedureModel);
-      });
+      this.proceduresService.getProcedures()
+        .subscribe(data => {
+          this.procedures = data;
+          this.procedures.unshift({ name: 'Select Procedure:' } as ProcedureModel);
+        });
 
-    this.clientsService.getClients()
-      .subscribe(data => {
-        this.clients = data;
-      });
+      this.clientsService.getClients()
+        .subscribe(data => {
+          this.clients = data;
+        });
 
-    this.getScheduler(this.searchDate, 0);
+      this.getScheduler(this.searchDate, 0);
+    }
   }
 
   private changeDate(modifier: number): void {
