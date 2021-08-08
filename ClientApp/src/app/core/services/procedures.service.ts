@@ -24,4 +24,12 @@ export class ProceduresService {
   public createProcedure(currProcedure: IProcedureModel): Observable<IProcedureModel> {
     return this.apiRequest.createProcedure(currProcedure);
   }
+
+  public updateProcedure(id: number, procedure: IProcedureModel) {
+    return this.apiRequest.updateProcedure(id,procedure);
+  }
+
+  public deleteProcedure(procedureId: number): void {
+    this.apiRequest.deleteProcedure(procedureId);
+  }
 }
