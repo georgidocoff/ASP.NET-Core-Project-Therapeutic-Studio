@@ -74,6 +74,32 @@ export class ApiRequest {
             .get<IClientModel[]>(`${environment.url}` + '/api/clients');
     }
 
+    public updateClient(id: string, clientModel: IClientModel): Observable<IClientModel> {
+        let httpOptions = {
+            headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+        };
+
+        return this.http.patch<IClientModel>(`${environment.url}` + `/api/clients/update/${id}`, clientModel, httpOptions)
+            .pipe(
+                tap((clientModel: any) =>
+                    console.log(`update client = ${id}`
+                    )),
+                catchError(async () => console.error())
+            );
+    }
+
+    public deleteClient(clientId:string){
+        this.http.delete(environment.url + `/api/clients/delete/${clientId}`)
+        .subscribe({
+            next: data => {
+                console.log('Delete successful');
+            },
+            error: error => {
+                console.error('There was an error!', error);
+            }
+        });
+    }
+
     public createScheduler(scheduler: ISchedulerModel): Observable<ISchedulerModel> {
         let httpOptions = {
             headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -92,6 +118,11 @@ export class ApiRequest {
     public getSchedulers(currentDate, hour) {
         return this.http
             .get<ISchedulerModel[]>(`${environment.url}` + `/api/schedulers/?searchedDate=${currentDate}&hour=${hour}`);
+    }
+
+    public getSchedulersClients(clientId:string) {
+        return this.http
+            .get<IClientModel[]>(`${environment.url}` + `api/schedulers/clients/?clientId=${clientId}`);
     }
 
     public updateScheduler(id: string, schedulerModel: ISchedulerModel): Observable<ISchedulerModel> {
