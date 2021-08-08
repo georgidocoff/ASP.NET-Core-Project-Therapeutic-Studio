@@ -1,22 +1,79 @@
-<table class="table table-striped">
-  <thead>
-  <tr>
-    <th scope="col">No</th>
-    <th scope="col">First name</th>
-    <th scope="col">Middle Name</th>
-    <th scope="col">Last Name</th>
-    <th scope="col">Position</th>
-    <th scope="col">Role</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let terapist of therapists; index as i">
-    <th scope="row">{{ i + 1 }}</th>
-    <td>{{ terapist.firstName }}</td>
-    <td>{{ terapist.middleName }}</td>
-    <td>{{ terapist.lastName }}</td>
-    <td>{{ positions[terapist.positionType].viewValue }}</td>
-    <td>{{ roles[terapist.roleType].viewValue }}</td>
-  </tr>
-  </tbody>
-</table>
+<div *ngIf="!isManageDialog">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">No</th>
+        <th scope="col">First name</th>
+        <th scope="col">Middle Name</th>
+        <th scope="col">Last Name</th>
+        <th scope="col">Position</th>
+        <th scope="col">Role</th>
+        <th scope="col">Buttons</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let terapist of therapists; index as i">
+        <th scope="row">{{ i + 1 }}</th>
+        <td>{{ terapist.firstName }}</td>
+        <td>{{ terapist.middleName }}</td>
+        <td>{{ terapist.lastName }}</td>
+        <td>{{ positions[terapist.positionType-1].viewValue }}</td>
+        <td>{{ roles[terapist.roleType-1].viewValue }}</td>
+        <td>
+          <input type="button" value="edit" class="btn btn-success mr-2" (click)="editTherapist(terapist)" />
+          <input type="button" value="del." class="btn btn-warning" (click)="deleteTherapist(terapist,i)" />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="isManageDialog">
+  <div class="card">
+    <h5 class="m-0">Therapist:</h5>
+    <div class="field col-4">
+      <h3></h3>
+      <div class="flex flex-column flex-md-row">
+        <p>
+          <label for="firstName" class="grid-m-4">Firstname : </label>
+          <input class="form-control mb-3" type="text" id="firstName" [(ngModel)]="therapist.firstName" required />
+        </p>
+        <p>
+          <label for="middleName" class="grid-m-4">Midname : </label>
+          <input class="form-control mb-3" type="text" id="middleName" [(ngModel)]="therapist.middleName" />
+        </p>
+        <p>
+          <label for="lastName" class="grid-m-4">Lastname : </label>
+          <input class="form-control mb-3" type="text" id="lastName" [(ngModel)]="therapist.lastName" required />
+        </p>
+      </div>
+      <h3></h3>
+      <div class="flex-column flex-md-row">
+        <p>
+          <label for="selectPosition" class="grid-m-4">Position : </label>
+          <!--<input type="text" id="ucn" [(ngModel)]="therapist.position" required /> -->
+          <select class="form-control mb-3" id="selectPosition" [(ngModel)]="selectPosition"
+            (change)="changePosition()">
+            <option *ngFor="let position of positions">
+              {{position.viewValue}}
+            </option>
+          </select>
+        </p>
+      </div>
+      <div class="flex-column flex-md-row">
+        <p>
+          <label for="selectRole" class="grid-m-4">Role : </label>
+          <!-- <input type="text" id="ucn" [(ngModel)]="therapist.role" required /> -->
+          <select class="form-control mb-3" id="selectRole" [(ngModel)]="selectRole" (change)="changeRole()">
+            <option *ngFor="let role of roles">
+              {{role.viewValue}}
+            </option>
+          </select>
+        </p>
+      </div>
+      <div class="flex-column flex-md-row mb-2">
+        <button class="btn btn-info" (click)="cancel()">Cancel</button>
+        <button class="btn btn-info" (click)="save(therapist)">Save</button>
+      </div>
+    </div>
+  </div>
