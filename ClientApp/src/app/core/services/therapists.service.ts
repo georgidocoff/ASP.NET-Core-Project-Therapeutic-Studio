@@ -31,6 +31,14 @@ export class TherapistsService {
   }
 
   public createTherapist(currTherapist: ITherapistModel): Observable<ITherapistModel> {
-      return this.apiRequest.createTherapist(currTherapist);
+    return this.apiRequest.createTherapist(currTherapist);
+  }
+
+  public updateTherapist(id: number, therapist: ITherapistModel) {
+    return this.apiRequest.updateTherapist(id,therapist);
+  }
+
+  public deleteTherapist(therapistId: number): void {
+    this.apiRequest.deleteTherapist(therapistId);
   }
 }
