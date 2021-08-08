@@ -22,19 +22,6 @@ namespace TherapeuticStudio.Services.Therapists
 
         public async Task<TherapistModel> CreateTherapist(TherapistModel therapistModel)
         {
-            //object positionType;
-            //object roleType;
-
-            //if (!Enum.TryParse(typeof(PositionType), therapistModel.PositionType.ToString(), out positionType))
-            //{
-            //    throw new InvalidOperationException("Error parsing enum value.");
-            //}
-
-            //if (!Enum.TryParse(typeof(RoleType), therapistModel.RoleType.ToString(), out roleType))
-            //{
-            //    throw new InvalidOperationException("Error parsing enum value.");
-            //}
-
             var therapist = new Тherapist
             {
                 Id =therapistModel.Id,
@@ -75,19 +62,19 @@ namespace TherapeuticStudio.Services.Therapists
             {
                 therapist.FirstName = therapistModel.FirstName;
             }
-            else if (therapistModel.MiddleName != string.Empty)
+            if (therapistModel.MiddleName != string.Empty)
             {
                 therapist.MiddleName = therapistModel.MiddleName;
             }
-            else if (therapistModel.LastName != string.Empty)
+            if (therapistModel.LastName != string.Empty)
             {
                 therapist.LastName = therapistModel.LastName;
             }
-            else if (therapistModel.PositionType != 0)
+            if (therapistModel.PositionType != 0)
             {
                 therapist.PositionType = therapistModel.PositionType.Value;
             }
-            else if (therapistModel.RoleType != 0)
+            if (therapistModel.RoleType != 0)
             {
                 therapist.RoleType = therapistModel.RoleType.Value;
             }

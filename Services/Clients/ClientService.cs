@@ -61,17 +61,17 @@
             {
                 client.FirstName = clientModel.FirstName;
             }
-            else if (clientModel.MiddleName != string.Empty)
+            if (clientModel.MiddleName != string.Empty)
             {
                 client.MiddleName = clientModel.MiddleName;
             }
-            else if (clientModel.LastName != string.Empty)
+            if (clientModel.LastName != string.Empty)
             {
                 client.LastName = clientModel.LastName;
             }
-            else if (clientModel.UCN != string.Empty)
+            if (clientModel.UCN != string.Empty)
             {
-                client.UCN = SharedService.UcnModifier(clientModel.FirstName, "encrypt");
+                client.UCN = SharedService.UcnModifier(clientModel.UCN, "encrypt");
             }
 
             this.applicationDbContext.Clients.Update(client);
