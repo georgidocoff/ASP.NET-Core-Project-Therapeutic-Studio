@@ -39,8 +39,9 @@ import { PaymentModel } from 'src/app/shared/Models/PaymentModel';
 export class HomeComponent {
   form: FormGroup;
 
+  isLoading: boolean = false;;
   user: any;
-  isAuthenticated: boolean;
+  isAuthenticated: boolean = false;
 
   paymentMethodAccess: boolean = false;
   paymentType: number = 0;
@@ -121,6 +122,10 @@ export class HomeComponent {
 
       this.getScheduler(this.searchDate, 0);
     }
+    
+    setTimeout(() => {
+      this.isLoading = true;
+    }, 700);
   }
 
   private changeDate(modifier: number): void {

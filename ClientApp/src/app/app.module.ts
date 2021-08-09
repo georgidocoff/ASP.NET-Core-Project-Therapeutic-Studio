@@ -11,11 +11,13 @@ import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.
 import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
 import { FeaturesModule } from './features/features.module';
+import { SharedModule } from './shared/shared.module';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { ApiRequest } from './core/api/api-therapeutick-studio';
 
 @NgModule({
@@ -30,9 +32,11 @@ import { ApiRequest } from './core/api/api-therapeutick-studio';
     FormsModule,
     ApiAuthorizationModule,
     FeaturesModule,
+    SharedModule,
     TypeaheadModule.forRoot(),
     BsDropdownModule.forRoot(),
     BsDatepickerModule.forRoot(),
+    ProgressbarModule.forRoot(),
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'features', loadChildren: () => import('./features/features.module').then(m => m.FeaturesModule), canActivate: [AuthorizeGuard] },

@@ -11,6 +11,7 @@ import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [HomeComponent, TherapistsManageComponent],
@@ -21,6 +22,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     ClientModule,
     TypeaheadModule,
     BsDropdownModule,
+    SharedModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forChild([
@@ -31,6 +33,6 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
       { path: 'therapists-manage', component: TherapistsManageComponent, canActivate: [AuthorizeGuard] },
     ]),
   ],
-  //exports: [MatInputModule, MatFormFieldModule]
+  exports: []
 })
 export class FeaturesModule { }
