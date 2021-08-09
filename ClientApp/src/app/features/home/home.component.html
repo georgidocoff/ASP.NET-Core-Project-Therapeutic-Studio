@@ -1,5 +1,5 @@
 <h1>Theurapeutic Managment Education Platform </h1>
-<div *ngIf="!(isAuthenticated)">Guest User
+<div *ngIf="!(isAuthenticated)">
 
   <body class="landing-body">
     <div class="landing-wrapper">
@@ -103,4 +103,8 @@
   </form>
 
 
+</div>
+
+<div *ngIf="!isLoading">
+  <app-progress-bar></app-progress-bar>
 </div>
