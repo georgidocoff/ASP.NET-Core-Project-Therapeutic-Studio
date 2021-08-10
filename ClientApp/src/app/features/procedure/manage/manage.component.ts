@@ -13,6 +13,7 @@ export class ManageComponent implements OnInit {
   procedures: IProcedureModel[];
   procedure: IProcedureModel;
 
+  isLoading: boolean = false;
   isManageDialog: boolean = false;
 
   constructor(
@@ -25,17 +26,25 @@ export class ManageComponent implements OnInit {
 
 
   public editProcedure(procedure: IProcedureModel): void {
+    this.isLoading = false;
+
     this.isManageDialog = !this.isManageDialog;
     this.procedure = { ...procedure };
+    
+    setTimeout(() => {
+      this.isLoading = true;
+    }, 300);
   }
 
   private cancel() {
+    this.isLoading = false;
     this.isManageDialog = !this.isManageDialog;
 
     this.getProcedures();
   }
 
   private save(procedure: IProcedureModel) {
+    this.isLoading = false;
     this.proceduresService.updateProcedure(procedure.id, procedure)
       .subscribe(data => {
         this.isManageDialog = !this.isManageDialog;
@@ -45,6 +54,8 @@ export class ManageComponent implements OnInit {
   }
 
   public deleteProcedure(procedure: IProcedureModel, index: number): void {
+    this.isLoading = false;
+
     if (!procedure) {
       throw Error('The procedure value is incorect')
     }
@@ -52,12 +63,20 @@ export class ManageComponent implements OnInit {
     this.proceduresService.deleteProcedure(procedure.id);
 
     this.procedures.splice(index, 1);
+    
+    setTimeout(() => {
+      this.isLoading = true;
+    }, 300);
   }
 
   private getProcedures(): void {
     this.proceduresService.getProcedures()
       .subscribe(res => {
         this.procedures = res;
+        
+        setTimeout(() => {
+          this.isLoading = true;
+        }, 300);
       });
   }
 }

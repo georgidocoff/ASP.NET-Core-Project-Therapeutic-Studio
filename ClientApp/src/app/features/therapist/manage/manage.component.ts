@@ -14,6 +14,7 @@ export class ManageComponent implements OnInit {
   therapists: ITherapistModel[];
   therapist: ITherapistModel;
 
+  isLoading: boolean = false;
   isManageDialog: boolean = false;
 
   positions: any[];
@@ -36,23 +37,32 @@ export class ManageComponent implements OnInit {
     this.getTherapists();
   }
 
-
   public editTherapist(therapist: ITherapistModel): void {
+    this.isLoading = false;
+
     this.isManageDialog = !this.isManageDialog;
     this.therapist = { ...therapist };
 
     this.selectPosition = this.infrastructure.positions[therapist.positionType].viewValue;
 
     this.selectRole = this.infrastructure.roles[therapist.roleType].viewValue;
+    
+    setTimeout(() => {
+      this.isLoading = true;
+    }, 300);
   }
 
   private cancel() {
+    this.isLoading = false;
+
     this.isManageDialog = !this.isManageDialog;
 
     this.getTherapists();
   }
 
   private save(therapist: ITherapistModel) {
+    this.isLoading = false;
+
     this.therapistsService.updateTherapist(therapist.id, therapist)
       .subscribe(data => {
         this.isManageDialog = !this.isManageDialog;
@@ -70,6 +80,8 @@ export class ManageComponent implements OnInit {
   }
 
   public deleteTherapist(therapist: ITherapistModel, index: number): void {
+    this.isLoading = false;
+
     if (!therapist) {
       throw Error('The therapist value is incorect')
     }
@@ -77,11 +89,19 @@ export class ManageComponent implements OnInit {
     this.therapistsService.deleteTherapist(therapist.id);
 
     this.therapists.splice(index, 1);
+    
+    setTimeout(() => {
+      this.isLoading = true;
+    }, 300);
   }
 
   private getTherapists(): void {
     this.therapistsService.getTherapists().subscribe(res => {
       this.therapists = res;
+      
+      setTimeout(() => {
+        this.isLoading = true;
+      }, 300);
     });
   }
 }

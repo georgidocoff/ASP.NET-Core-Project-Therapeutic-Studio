@@ -1,3 +1,12 @@
+<div>
+  <div *ngIf="!isLoading">
+    <app-progress-bar></app-progress-bar>
+  </div>
+  <div *ngIf="isLoading">
+    <p style="color: aliceblue;">.</p>
+  </div>
+</div>
+
 <div class="grid">
   <div class="col-12">
     <div class="card">
@@ -25,7 +34,7 @@
 
     </div>
 
-    <div *ngIf="payments!=undefined">
+    <div *ngIf="payments?payments.length>0:false">
       <div class="flex flex-column flex-md-row jc-md-between table-header">
         <h5 class="mt-2 mb-2">Time line: </h5>
       </div>
@@ -47,5 +56,8 @@
       </table>
     </div>
 
+    <div *ngIf="payments?payments.length==0:false">
+      <h5 class="mt-2 mb-2">No data for current day.</h5>
+    </div>
   </div>
 </div>

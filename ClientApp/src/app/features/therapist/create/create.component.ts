@@ -17,6 +17,7 @@ export class CreateComponent implements OnInit {
   form: FormGroup;
   positions: any;
   roles: any;
+  isLoading: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -36,9 +37,15 @@ export class CreateComponent implements OnInit {
       positionType: [null],
       roleType: [null],
     });
+
+    setTimeout(() => {
+      this.isLoading = true;
+    }, 300);
   }
 
   onSubmit() {
+    this.isLoading = false;
+
     let currTherapist = new TherapistModel;
     currTherapist.firstName = this.form.value.firstName;
     currTherapist.middleName = this.form.value.middleName;
@@ -49,6 +56,9 @@ export class CreateComponent implements OnInit {
     this.therapistsService.createTherapist(currTherapist)
       .subscribe(res => {
         
+          setTimeout(() => {
+            this.isLoading = true;
+          }, 300);
       });
 
     this.form.reset();

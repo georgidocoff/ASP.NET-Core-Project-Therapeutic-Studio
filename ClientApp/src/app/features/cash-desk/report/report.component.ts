@@ -22,6 +22,8 @@ export class ReportComponent implements OnInit {
   procedures: IProcedureModel[];
   procedure: IProcedureModel;
 
+  isLoading: boolean = false;
+
   constructor(
     private paymentsService: PaymentsService,
     private proceduresService: ProceduresService,
@@ -30,9 +32,13 @@ export class ReportComponent implements OnInit {
   ngOnInit() {
     this.setBsConfig();
 
+    setTimeout(() => {
+      this.isLoading = true;
+    }, 500);
   }
 
   private toggle() {
+    this.isLoading = false;
     this.unpaid = 0;
     this.paid = 0;
 
@@ -41,13 +47,16 @@ export class ReportComponent implements OnInit {
         this.payments = data;
 
         this.payments.forEach(paiment => {
-          if (paiment.type==0) {
-            this.unpaid+=paiment.price;
+          if (paiment.type == 0) {
+            this.unpaid += paiment.price;
           } else {
-            this.paid+=paiment.price;
+            this.paid += paiment.price;
           }
         });
-
+        
+        setTimeout(() => {
+          this.isLoading = true;
+        }, 300);
       });
 
   }

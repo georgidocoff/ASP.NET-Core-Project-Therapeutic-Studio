@@ -1,4 +1,14 @@
-<h1>Theurapeutic Managment Education Platform </h1>
+<h1 style="display: none;">Theurapeutic Managment Platform </h1>
+
+<div>
+  <div *ngIf="!isLoading">
+    <app-progress-bar></app-progress-bar>
+  </div>
+  <div *ngIf="isLoading">
+    <p style="color: aliceblue;">.</p>
+  </div>
+</div>
+
 <div *ngIf="!(isAuthenticated)">
 
   <body class="landing-body">
@@ -103,8 +113,4 @@
   </form>
 
 
-</div>
-
-<div *ngIf="!isLoading">
-  <app-progress-bar></app-progress-bar>
 </div>

@@ -13,6 +13,7 @@ import { ProcedureModel } from '../../../shared/Models/ProcedureModel';
 })
 export class CreateComponent implements OnInit {
   form: FormGroup;
+  isLoading: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -25,9 +26,15 @@ export class CreateComponent implements OnInit {
       duration: [null],
       price: [null],
     });
+
+    setTimeout(() => {
+      this.isLoading = true;
+    }, 300);
   }
 
   onSubmit() {
+    this.isLoading = false;
+    
     let currProcedure = new ProcedureModel;
     currProcedure.name = this.form.value.name;
     currProcedure.duration = this.form.value.duration;
@@ -36,6 +43,9 @@ export class CreateComponent implements OnInit {
     this.proceduresService.createProcedure(currProcedure)
     .subscribe(res => {
       
+      setTimeout(() => {
+        this.isLoading = true;
+      }, 300);
     });
 
     this.form.reset();

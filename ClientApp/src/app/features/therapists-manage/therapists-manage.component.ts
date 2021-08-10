@@ -18,6 +18,7 @@ export class TherapistsManageComponent implements OnInit {
   clients: IClientModel[];
   client: IClientModel;
 
+  isLoading: boolean = false;
   isManageDialog: boolean = false;
 
   constructor(
@@ -29,11 +30,11 @@ export class TherapistsManageComponent implements OnInit {
 
   ngOnInit() {
     this.getClients();
-
   }
 
 
   public editClient(client: IClientModel): void {
+    this.isLoading = false;
     this.amountPrice = 0;
     this.isManageDialog = !this.isManageDialog;
     this.client = { ...client };
@@ -46,6 +47,11 @@ export class TherapistsManageComponent implements OnInit {
         this.schedulers.forEach(scheduler => {
           this.amountPrice += this.procedures[scheduler.procedureId - 1].price;
         });
+
+        setTimeout(() => {
+
+          this.isLoading = true;
+        }, 300);
       });
 
   }
@@ -64,6 +70,11 @@ export class TherapistsManageComponent implements OnInit {
     this.clientsService.getClients()
       .subscribe(data => {
         this.clients = data;
+
+        setTimeout(() => {
+
+          this.isLoading = true;
+        }, 300);
       });
   }
 
@@ -90,8 +101,8 @@ export class TherapistsManageComponent implements OnInit {
 
   private save(client: IClientModel) {
     this.clientsService.updateClient(client.id, client)
-      .subscribe(data=>{
-        
+      .subscribe(data => {
+
       });
   }
 }

@@ -13,6 +13,7 @@ import { ClientModel } from '../../../shared/Models/ClientModel';
 })
 export class CreateComponent implements OnInit {
   form: FormGroup;
+  isLoading: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -26,9 +27,15 @@ export class CreateComponent implements OnInit {
       lastName: [null],
       ucn: [null],
     });
+
+    setTimeout(() => {
+      this.isLoading = true;
+    }, 300);
   }
 
   onSubmit() {
+    this.isLoading = false;
+
     let currClient = new ClientModel;
     currClient.firstName = this.form.value.firstName;
     currClient.middleName = this.form.value.middleName;
@@ -36,8 +43,11 @@ export class CreateComponent implements OnInit {
     currClient.ucn = this.form.value.ucn;
 
     this.clientsService.createClient(currClient)
-      .subscribe(data=>{
-        
+      .subscribe(data => {
+
+        setTimeout(() => {
+          this.isLoading = true;
+        }, 300);
       });
 
     this.form.reset();

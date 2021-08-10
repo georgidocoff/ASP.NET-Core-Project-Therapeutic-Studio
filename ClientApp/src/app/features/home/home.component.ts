@@ -105,6 +105,10 @@ export class HomeComponent {
       this.therapistsService.getTherapists()
         .subscribe(data => {
           this.therapists = data;
+
+          setTimeout(() => {
+            this.isLoading = true;
+          }, 300);
         });
 
       this.createWorkHours();
@@ -122,13 +126,12 @@ export class HomeComponent {
 
       this.getScheduler(this.searchDate, 0);
     }
-    
-    setTimeout(() => {
-      this.isLoading = true;
-    }, 700);
+
   }
 
   private changeDate(modifier: number): void {
+    this.isLoading = false;
+
     this.searchDate.setDate(this.searchDate.getDate() + modifier);
     this.currentDate = this.createCurrentDate(this.searchDate).toLocaleDateString();
 
@@ -143,6 +146,7 @@ export class HomeComponent {
   }
 
   private currentDay(): void {
+    this.isLoading = false;
     this.isCurrentDayToday = true;
     this.searchDate = new Date;
     this.currentDate = this.createCurrentDate(this.searchDate).toLocaleDateString();
@@ -331,6 +335,14 @@ export class HomeComponent {
         currentDate: this.createTableDate(current, i),
         text: []
       });
+
+      if (i == this.constants.workHourLastHour - 1
+        && this.therapists) {
+
+        setTimeout(() => {
+          this.isLoading = true;
+        }, 300);
+      }
     }
   }
 

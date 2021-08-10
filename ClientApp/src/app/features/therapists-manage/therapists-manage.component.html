@@ -1,3 +1,12 @@
+<div>
+  <div *ngIf="!isLoading">
+    <app-progress-bar></app-progress-bar>
+  </div>
+  <div *ngIf="isLoading">
+    <p style="color: aliceblue;">.</p>
+  </div>
+</div>
+
 <div *ngIf="!isManageDialog">
   <table class="table table-striped">
     <thead>
@@ -51,14 +60,13 @@
         </p>
         <p>
           <label for="amountPrice" class="grid-m-4">Sum : </label>
-          <input class="form-control mb-3" type="text" style="width: fit-content;" id="amountPrice" [(ngModel)]="amountPrice" disabled />
+          <input class="form-control mb-3" type="text" style="width: fit-content;" id="amountPrice"
+            [(ngModel)]="amountPrice" disabled />
         </p>
       </div>
       <div class="flex-column flex-md-row mb-2">
-        <button class="btn btn-info"
-        (click)="cancel()">Back</button>
-    <button class="btn btn-info"
-        (click)="save(client)">Save</button>
+        <button class="btn btn-info" (click)="cancel()">Back</button>
+        <button class="btn btn-info" (click)="save(client)">Save</button>
       </div>
     </div>
   </div>
