@@ -129,7 +129,6 @@ export class HomeComponent {
 
       this.getScheduler(this.searchDate, 0);
     }
-    this.alerts.push(this.messages.get('info', 'Peter Ivanov'));
   }
 
   // onClosed(dismissedAlert: AlertConfig): void {
