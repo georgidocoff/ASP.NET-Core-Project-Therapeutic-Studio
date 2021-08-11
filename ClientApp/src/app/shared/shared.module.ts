@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ProgressBarComponent } from './progress-bar/progress-bar.component';
+import { AlertModule } from 'ngx-bootstrap/alert';
 
 @NgModule({
   declarations: [ProgressBarComponent],
@@ -11,7 +12,7 @@ import { ProgressBarComponent } from './progress-bar/progress-bar.component';
     FormsModule,
     RouterModule,
   ],
-  exports:[ProgressBarComponent],
+  exports:[ProgressBarComponent,AlertModule],
 })
 
 export class SharedModule { }
