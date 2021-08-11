@@ -7,6 +7,10 @@
   </div>
 </div>
 
+<div *ngFor="let alert of alerts">
+  <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
+</div>
+
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <div class="grid fluid">
     <div class="col-12 md-6 offset-md-5">

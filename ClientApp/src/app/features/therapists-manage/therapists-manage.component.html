@@ -7,6 +7,10 @@
   </div>
 </div>
 
+<div *ngFor="let alert of alerts">
+  <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
+</div>
+
 <div *ngIf="!isManageDialog">
   <table class="table table-striped">
     <thead>
@@ -95,4 +99,10 @@
     </table>
   </div>
 
+</div>
+
+<div class="justify-content-end" *ngIf="isDeleteDialog">
+  Are You shure to delete?
+  <button type="button" class="btn btn-default" (click)="confirm()">Yes</button>
+  <button type="button" class="btn btn-primary" (click)="decline()">No</button>
 </div>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { ApiRequest } from 'src/app/core/api/api-therapeutick-studio';
+import { MessagesService } from 'src/app/core/services/messages.service';
 import { PaymentsService } from 'src/app/core/services/payments.service';
 import { ProceduresService } from 'src/app/core/services/procedures.service';
 
@@ -23,10 +24,12 @@ export class ReportComponent implements OnInit {
   procedure: IProcedureModel;
 
   isLoading: boolean = false;
+  alerts: IAlertModel[] = [];
 
   constructor(
     private paymentsService: PaymentsService,
     private proceduresService: ProceduresService,
+    private messages: MessagesService,
   ) { }
 
   ngOnInit() {
@@ -53,7 +56,7 @@ export class ReportComponent implements OnInit {
             this.paid += paiment.price;
           }
         });
-        
+
         setTimeout(() => {
           this.isLoading = true;
         }, 300);
@@ -72,5 +75,10 @@ export class ReportComponent implements OnInit {
     this.bsConfig = Object.assign({});
     this.bsConfig.isAnimated = true;
     this.bsConfig.containerClass = 'theme-blue';
+  }
+
+  private message(type: string, output: string): void {
+    this.alerts.push(this.messages
+      .get(type, output));
   }
 }

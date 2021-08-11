@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ClientsService } from 'src/app/core/services/clients.service';
+import { MessagesService } from 'src/app/core/services/messages.service';
 
 import { ApiRequest } from '../../../core/api/api-therapeutick-studio';
 
@@ -13,12 +14,14 @@ export class ManageComponent implements OnInit {
   clients: IClientModel[];
   client: IClientModel;
 
-  isLoading: boolean = false;
   isManageDialog: boolean = false;
+  isLoading: boolean = false;
+  alerts: IAlertModel[] = [];
 
   constructor(
     private apiRequest: ApiRequest,
     private clientsService: ClientsService,
+    private messages: MessagesService,
   ) { }
 
   ngOnInit() {
@@ -49,6 +52,8 @@ export class ManageComponent implements OnInit {
       .subscribe(data => {
         this.isManageDialog = !this.isManageDialog;
 
+        this.message('update', client);
+
         this.getClients();
       });
   }
@@ -62,10 +67,12 @@ export class ManageComponent implements OnInit {
     this.clientsService.deleteClient(client.id);
 
     this.clients.splice(index, 1);
-    
+
     setTimeout(() => {
       this.isLoading = true;
     }, 300);
+
+    this.message('delete', client);
   }
 
   private getClients(): void {
@@ -77,5 +84,10 @@ export class ManageComponent implements OnInit {
           this.isLoading = true;
         }, 300);
       });
+  }
+
+  private message(type: string, client: IClientModel): void {
+    this.alerts.push(this.messages
+      .get(type, `${client.firstName} ${client.lastName}`));
   }
 }

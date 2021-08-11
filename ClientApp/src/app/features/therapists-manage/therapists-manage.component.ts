@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { AlertConfig } from 'ngx-bootstrap/alert';
 import { ApiRequest } from 'src/app/core/api/api-therapeutick-studio';
 import { ClientsService } from 'src/app/core/services/clients.service';
+import { MessagesService } from 'src/app/core/services/messages.service';
 import { ProceduresService } from 'src/app/core/services/procedures.service';
 import { SchedulersService } from 'src/app/core/services/schedulers.service';
 
@@ -8,7 +10,13 @@ import { SchedulersService } from 'src/app/core/services/schedulers.service';
   selector: 'app-therapists-manage',
   templateUrl: './therapists-manage.component.html',
   styleUrls: ['./therapists-manage.component.css'],
-  providers: [ApiRequest, ClientsService, SchedulersService, ProceduresService]
+  providers: [
+    ApiRequest,
+    ClientsService,
+    SchedulersService,
+    ProceduresService,
+    AlertConfig,
+  ]
 })
 export class TherapistsManageComponent implements OnInit {
   schedulers: ISchedulerModel[];
@@ -17,15 +25,20 @@ export class TherapistsManageComponent implements OnInit {
   amountPrice: number = 0;
   clients: IClientModel[];
   client: IClientModel;
+  index: number;
 
   isLoading: boolean = false;
   isManageDialog: boolean = false;
+  isDeleteDialog: boolean = false;
+
+  alerts: IAlertModel[] = [];
 
   constructor(
     private apiRequest: ApiRequest,
     private clientsService: ClientsService,
     private schedulersService: SchedulersService,
     private proceduresService: ProceduresService,
+    private messages: MessagesService,
   ) { }
 
   ngOnInit() {
@@ -57,13 +70,18 @@ export class TherapistsManageComponent implements OnInit {
   }
 
   public deleteClient(client: IClientModel, index: number): void {
+    this.alerts = [];
+    this.isDeleteDialog = !this.isDeleteDialog;
+
     if (!client) {
-      throw Error('The client value is incorect')
+      //throw Error('The client value is incorect')
+      this.alerts.push(this.messages.get('danger', 'The client value is incorect'));
+      return;
     }
 
-    this.clientsService.deleteClient(client.id);
-
-    this.clients.splice(index, 1);
+    this.alerts.push(this.messages.get('warning', (client.firstName + ' ' + client.lastName)));
+    this.client = client;
+    this.index = index;
   }
 
   private getClients(): void {
@@ -94,15 +112,43 @@ export class TherapistsManageComponent implements OnInit {
   }
 
   private cancel() {
+    this.isLoading = false;
     this.isManageDialog = !this.isManageDialog;
 
     this.getClients();
   }
 
+  private decline(): void {
+    this.isDeleteDialog = !this.isDeleteDialog;
+  }
+
+  private confirm(): void {
+    if (!this.client || !this.index) {
+      throw Error('The value of client is invalid.')
+    }
+
+    this.clientsService.deleteClient(this.client.id);
+
+    this.clients.splice(this.index, 1);
+    this.isDeleteDialog = !this.isDeleteDialog;
+
+  }
+
   private save(client: IClientModel) {
+    this.alerts = [];
+    this.isLoading = false;
+
     this.clientsService.updateClient(client.id, client)
       .subscribe(data => {
 
+        setTimeout(() => {
+          this.isLoading = true;
+        }, 300);
       });
+  }
+
+  private message(type: string, client: IClientModel): void {
+    this.alerts.push(this.messages
+      .get(type, `${client.firstName} ${client.lastName}`));
   }
 }

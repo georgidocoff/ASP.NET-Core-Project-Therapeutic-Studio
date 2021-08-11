@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Infrastructure } from '../../../shared/infrastructure';
 import { ApiRequest } from '../../../core/api/api-therapeutick-studio';
 import { TherapistsService } from 'src/app/core/services/therapists.service';
+import { MessagesService } from 'src/app/core/services/messages.service';
 
 @Component({
   selector: 'app-manage',
@@ -14,8 +15,9 @@ export class ManageComponent implements OnInit {
   therapists: ITherapistModel[];
   therapist: ITherapistModel;
 
-  isLoading: boolean = false;
   isManageDialog: boolean = false;
+  isLoading: boolean = false;
+  alerts: IAlertModel[] = [];
 
   positions: any[];
   position: any;
@@ -27,6 +29,7 @@ export class ManageComponent implements OnInit {
   constructor(
     private infrastructure: Infrastructure,
     private therapistsService: TherapistsService,
+    private messages: MessagesService,
   ) { }
 
   ngOnInit() {
@@ -46,7 +49,7 @@ export class ManageComponent implements OnInit {
     this.selectPosition = this.infrastructure.positions[therapist.positionType].viewValue;
 
     this.selectRole = this.infrastructure.roles[therapist.roleType].viewValue;
-    
+
     setTimeout(() => {
       this.isLoading = true;
     }, 300);
@@ -66,6 +69,8 @@ export class ManageComponent implements OnInit {
     this.therapistsService.updateTherapist(therapist.id, therapist)
       .subscribe(data => {
         this.isManageDialog = !this.isManageDialog;
+
+        this.message('update', therapist);
 
         this.getTherapists();
       });
@@ -89,19 +94,26 @@ export class ManageComponent implements OnInit {
     this.therapistsService.deleteTherapist(therapist.id);
 
     this.therapists.splice(index, 1);
-    
+
     setTimeout(() => {
       this.isLoading = true;
     }, 300);
+
+    this.message('delete', therapist);
   }
 
   private getTherapists(): void {
     this.therapistsService.getTherapists().subscribe(res => {
       this.therapists = res;
-      
+
       setTimeout(() => {
         this.isLoading = true;
       }, 300);
     });
+  }
+
+  private message(type: string, therapist: ITherapistModel): void {
+    this.alerts.push(this.messages
+      .get(type, `${therapist.firstName} ${therapist.lastName}`));
   }
 }

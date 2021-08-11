@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiRequest } from 'src/app/core/api/api-therapeutick-studio';
+import { MessagesService } from 'src/app/core/services/messages.service';
 import { ProceduresService } from 'src/app/core/services/procedures.service';
 
 @Component({
@@ -13,11 +14,13 @@ export class ManageComponent implements OnInit {
   procedures: IProcedureModel[];
   procedure: IProcedureModel;
 
-  isLoading: boolean = false;
   isManageDialog: boolean = false;
+  isLoading: boolean = false;
+  alerts: IAlertModel[] = [];
 
   constructor(
     private proceduresService: ProceduresService,
+    private messages: MessagesService,
   ) { }
 
   ngOnInit() {
@@ -30,10 +33,12 @@ export class ManageComponent implements OnInit {
 
     this.isManageDialog = !this.isManageDialog;
     this.procedure = { ...procedure };
-    
+
     setTimeout(() => {
       this.isLoading = true;
     }, 300);
+
+    this.message('update', procedure);
   }
 
   private cancel() {
@@ -63,20 +68,27 @@ export class ManageComponent implements OnInit {
     this.proceduresService.deleteProcedure(procedure.id);
 
     this.procedures.splice(index, 1);
-    
+
     setTimeout(() => {
       this.isLoading = true;
     }, 300);
+
+    this.message('delete', procedure);
   }
 
   private getProcedures(): void {
     this.proceduresService.getProcedures()
       .subscribe(res => {
         this.procedures = res;
-        
+
         setTimeout(() => {
           this.isLoading = true;
         }, 300);
       });
+  }
+
+  private message(type: string, procedure: IProcedureModel): void {
+    this.alerts.push(this.messages
+      .get(type, `${procedure.name}`));
   }
 }

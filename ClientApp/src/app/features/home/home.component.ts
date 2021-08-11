@@ -1,13 +1,11 @@
-import { Component, ElementRef, Injectable, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { LocalStorageServiceService } from '../../core/services/local-storage-service.service';
 import { ApiRequest } from '../../core/api/api-therapeutick-studio';
 import { AppConstants } from '../../shared/app-constan';
 import { ProcedureModel } from 'src/app/shared/Models/ProcedureModel';
 
-import { Observable, OperatorFunction } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/operators';
 import { TypeaheadConfig } from 'ngx-bootstrap/typeahead';
 import { BsDropdownConfig, BsDropdownDirective } from 'ngx-bootstrap/dropdown';
 import { SchedulerModel } from 'src/app/shared/Models/SchedulerModel';
@@ -17,7 +15,9 @@ import { TherapistsService } from 'src/app/core/services/therapists.service';
 import { ClientsService } from 'src/app/core/services/clients.service';
 import { PaymentsService } from 'src/app/core/services/payments.service';
 import { PaymentModel } from 'src/app/shared/Models/PaymentModel';
-
+import { AlertConfig } from 'ngx-bootstrap/alert';
+import { MessagesService } from 'src/app/core/services/messages.service';
+import { AlertModel } from 'src/app/shared/Models/AlertModel';
 
 @Component({
   selector: 'app-home',
@@ -29,19 +29,22 @@ import { PaymentModel } from 'src/app/shared/Models/PaymentModel';
     TypeaheadConfig,
     BsDropdownConfig,
     BsDropdownDirective,
+    AlertConfig,
     ProceduresService,
     TherapistsService,
     ClientsService,
     PaymentsService,
+    MessagesService,
   ]
 })
 
 export class HomeComponent {
   form: FormGroup;
 
-  isLoading: boolean = false;;
   user: any;
   isAuthenticated: boolean = false;
+  isLoading: boolean = false;
+  alerts: IAlertModel[] = [];
 
   paymentMethodAccess: boolean = false;
   paymentType: number = 0;
@@ -81,12 +84,12 @@ export class HomeComponent {
     private therapistsService: TherapistsService,
     private clientsService: ClientsService,
     private paymentsService: PaymentsService,
+    private messages: MessagesService,
     private constants: AppConstants,
     private fb: FormBuilder,
   ) { }
 
   ngOnInit() {
-
     this.form = this.fb.group({
       clientFullName: [null],
       currProcedure: [null],
@@ -126,9 +129,12 @@ export class HomeComponent {
 
       this.getScheduler(this.searchDate, 0);
     }
-
+    this.alerts.push(this.messages.get('info', 'Peter Ivanov'));
   }
 
+  // onClosed(dismissedAlert: AlertConfig): void {
+  //   this.alerts = this.alerts.filter(alert => alert !== dismissedAlert);
+  // }
   private changeDate(modifier: number): void {
     this.isLoading = false;
 
@@ -140,7 +146,6 @@ export class HomeComponent {
     } else {
       this.isCurrentDayToday = false;
     }
-
 
     this.createWorkHours();
   }
@@ -178,12 +183,12 @@ export class HomeComponent {
     currentScheduler.therapistId = this.therapistsService.getTherapistId(therapistFullName, this.therapists);
     currentScheduler.paymentType = this.form.value.paymentType ? this.form.value.paymentType : 0;
 
-    console.log(this.paymentType);
     if (!this.paymentMethodAccess) {
       this.apiRequest.createScheduler(currentScheduler)
         .subscribe(data => {
           this.getScheduler(this.searchDate, 0);
 
+          this.message('create', ` new scheduler for ${this.client.firstName} ${this.client.lastName}`)
           this.createWorkHours();
         });
 
@@ -201,6 +206,7 @@ export class HomeComponent {
 
           this.apiRequest.updateScheduler(this.scheduler.id, currentScheduler)
             .subscribe(data => {
+              this.message('update',`scheduler for ${this.client.firstName} ${this.client.lastName}`)
 
               this.getScheduler(this.searchDate, 0);
 
@@ -301,11 +307,7 @@ export class HomeComponent {
         default:
           throw Error('The payment type is invalid.')
       }
-
-      console.log(this.paymentType);
-
     }
-
   }
 
   private changeProcedure(): void {
@@ -351,5 +353,10 @@ export class HomeComponent {
       current.getUTCMonth(),
       current.getUTCDate(),
       (index), 0, 0.000).toUTCString();
+  }
+
+  private message(type: string, output: string): void {
+    this.alerts.push(this.messages
+      .get(type, output));
   }
 }

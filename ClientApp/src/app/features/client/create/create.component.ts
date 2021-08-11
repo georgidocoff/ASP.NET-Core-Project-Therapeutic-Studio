@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ClientsService } from 'src/app/core/services/clients.service';
+import { MessagesService } from 'src/app/core/services/messages.service';
 
 import { ApiRequest } from '../../../core/api/api-therapeutick-studio';
 import { ClientModel } from '../../../shared/Models/ClientModel';
@@ -13,11 +14,13 @@ import { ClientModel } from '../../../shared/Models/ClientModel';
 })
 export class CreateComponent implements OnInit {
   form: FormGroup;
+  alerts: IAlertModel[] = [];
   isLoading: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private clientsService: ClientsService,
+    private messages: MessagesService,
   ) { }
 
   ngOnInit() {
@@ -48,9 +51,15 @@ export class CreateComponent implements OnInit {
         setTimeout(() => {
           this.isLoading = true;
         }, 300);
+
+        this.message('create', currClient);
       });
 
     this.form.reset();
   }
 
+  private message(type: string, client: IClientModel): void {
+    this.alerts.push(this.messages
+      .get(type, `${client.firstName} ${client.lastName}`));
+  }
 }

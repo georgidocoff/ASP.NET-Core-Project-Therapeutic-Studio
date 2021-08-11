@@ -5,6 +5,7 @@ import { Infrastructure } from '../../../shared/infrastructure';
 import { ApiRequest } from '../../../core/api/api-therapeutick-studio';
 import { TherapistModel } from '../../../shared/Models/TherapistModel';
 import { TherapistsService } from 'src/app/core/services/therapists.service';
+import { MessagesService } from 'src/app/core/services/messages.service';
 
 @Component({
   selector: 'app-create',
@@ -17,12 +18,15 @@ export class CreateComponent implements OnInit {
   form: FormGroup;
   positions: any;
   roles: any;
+
   isLoading: boolean = false;
+  alerts: IAlertModel[] = [];
 
   constructor(
     private fb: FormBuilder,
     private infrastructure: Infrastructure,
     private therapistsService: TherapistsService,
+    private messages: MessagesService,
   ) { }
 
   ngOnInit() {
@@ -55,12 +59,19 @@ export class CreateComponent implements OnInit {
 
     this.therapistsService.createTherapist(currTherapist)
       .subscribe(res => {
-        
-          setTimeout(() => {
-            this.isLoading = true;
-          }, 300);
+
+        setTimeout(() => {
+          this.isLoading = true;
+        }, 300);
+
+        this.message('create',currTherapist);
       });
 
     this.form.reset();
+  }
+
+  private message(type: string, therapist: ITherapistModel): void {
+    this.alerts.push(this.messages
+      .get(type, `${therapist.firstName} ${therapist.lastName}`));
   }
 }
