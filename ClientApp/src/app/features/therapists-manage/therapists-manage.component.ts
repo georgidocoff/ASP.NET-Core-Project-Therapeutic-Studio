@@ -74,12 +74,10 @@ export class TherapistsManageComponent implements OnInit {
     this.isDeleteDialog = !this.isDeleteDialog;
 
     if (!client) {
-      //throw Error('The client value is incorect')
-      this.alerts.push(this.messages.get('danger', 'The client value is incorect'));
-      return;
+      throw Error('The client value is incorect')
     }
 
-    this.alerts.push(this.messages.get('warning', (client.firstName + ' ' + client.lastName)));
+    this.message('warning', client);
     this.client = client;
     this.index = index;
   }
@@ -131,7 +129,6 @@ export class TherapistsManageComponent implements OnInit {
 
     this.clients.splice(this.index, 1);
     this.isDeleteDialog = !this.isDeleteDialog;
-
   }
 
   private save(client: IClientModel) {

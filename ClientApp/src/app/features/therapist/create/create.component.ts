@@ -6,12 +6,13 @@ import { ApiRequest } from '../../../core/api/api-therapeutick-studio';
 import { TherapistModel } from '../../../shared/Models/TherapistModel';
 import { TherapistsService } from 'src/app/core/services/therapists.service';
 import { MessagesService } from 'src/app/core/services/messages.service';
+import { AlertConfig } from 'ngx-bootstrap/alert';
 
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.css'],
-  providers: [Infrastructure, TherapistModel, ApiRequest, TherapistsService]
+  providers: [Infrastructure, TherapistModel, ApiRequest, TherapistsService, AlertConfig]
 })
 
 export class CreateComponent implements OnInit {
@@ -64,7 +65,7 @@ export class CreateComponent implements OnInit {
           this.isLoading = true;
         }, 300);
 
-        this.message('create',currTherapist);
+        this.message('create', currTherapist);
       });
 
     this.form.reset();

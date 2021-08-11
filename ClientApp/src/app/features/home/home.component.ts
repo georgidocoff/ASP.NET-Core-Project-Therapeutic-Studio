@@ -187,7 +187,7 @@ export class HomeComponent {
         .subscribe(data => {
           this.getScheduler(this.searchDate, 0);
 
-          this.message('create', ` new scheduler for ${this.client.firstName} ${this.client.lastName}`)
+          this.message('create', ` new scheduler.`)
           this.createWorkHours();
         });
 
@@ -205,7 +205,7 @@ export class HomeComponent {
 
           this.apiRequest.updateScheduler(this.scheduler.id, currentScheduler)
             .subscribe(data => {
-              this.message('update',`scheduler for ${this.client.firstName} ${this.client.lastName}`)
+              this.message('update',` scheduler`)
 
               this.getScheduler(this.searchDate, 0);
 

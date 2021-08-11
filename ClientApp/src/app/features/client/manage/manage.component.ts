@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AlertConfig } from 'ngx-bootstrap/alert';
 import { ClientsService } from 'src/app/core/services/clients.service';
 import { MessagesService } from 'src/app/core/services/messages.service';
 
@@ -8,12 +9,14 @@ import { ApiRequest } from '../../../core/api/api-therapeutick-studio';
   selector: 'app-manage',
   templateUrl: './manage.component.html',
   styleUrls: ['./manage.component.css'],
-  providers: [ApiRequest, ClientsService]
+  providers: [ApiRequest, ClientsService, AlertConfig]
 })
 export class ManageComponent implements OnInit {
   clients: IClientModel[];
   client: IClientModel;
+  index: number;
 
+  isDeleteDialog: boolean = false;
   isManageDialog: boolean = false;
   isLoading: boolean = false;
   alerts: IAlertModel[] = [];
@@ -59,22 +62,36 @@ export class ManageComponent implements OnInit {
   }
 
   public deleteClient(client: IClientModel, index: number): void {
-    this.isLoading = false;
+    this.isDeleteDialog = true;
     if (!client) {
       throw Error('The client value is incorect')
     }
 
-    this.clientsService.deleteClient(client.id);
-
-    this.clients.splice(index, 1);
+    this.message('warning', client);
+    this.client = client;
+    this.index = index;
 
     setTimeout(() => {
       this.isLoading = true;
     }, 300);
 
-    this.message('delete', client);
   }
 
+  private confirm(): void {
+    if (!this.client || !this.index) {
+      throw Error('The value of client is invalid.')
+    }
+
+    this.clientsService.deleteClient(this.client.id);
+
+    this.clients.splice(this.index, 1);
+    this.isDeleteDialog = !this.isDeleteDialog;
+    this.message('delete', this.client);
+  }
+
+  private decline(): void {
+    this.isDeleteDialog = !this.isDeleteDialog;
+  }
   private getClients(): void {
     this.clientsService.getClients()
       .subscribe(data => {

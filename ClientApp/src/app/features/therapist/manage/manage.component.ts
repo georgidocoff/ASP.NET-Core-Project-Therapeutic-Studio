@@ -4,16 +4,20 @@ import { Infrastructure } from '../../../shared/infrastructure';
 import { ApiRequest } from '../../../core/api/api-therapeutick-studio';
 import { TherapistsService } from 'src/app/core/services/therapists.service';
 import { MessagesService } from 'src/app/core/services/messages.service';
+import { AlertConfig } from 'ngx-bootstrap/alert';
 
 @Component({
   selector: 'app-manage',
   templateUrl: './manage.component.html',
   styleUrls: ['./manage.component.css'],
-  providers: [Infrastructure, ApiRequest, TherapistsService]
+  providers: [Infrastructure, ApiRequest, TherapistsService, AlertConfig]
 })
 export class ManageComponent implements OnInit {
   therapists: ITherapistModel[];
   therapist: ITherapistModel;
+
+  isDeleteDialog: boolean = false;
+  index: number;
 
   isManageDialog: boolean = false;
   isLoading: boolean = false;
@@ -85,21 +89,32 @@ export class ManageComponent implements OnInit {
   }
 
   public deleteTherapist(therapist: ITherapistModel, index: number): void {
-    this.isLoading = false;
-
+    this.isDeleteDialog = true;
     if (!therapist) {
       throw Error('The therapist value is incorect')
     }
 
-    this.therapistsService.deleteTherapist(therapist.id);
+    this.message('warning', therapist);
+    this.therapist = therapist;
+    this.index = index;
+  }
 
-    this.therapists.splice(index, 1);
+  private decline(): void {
+    this.isDeleteDialog = !this.isDeleteDialog;
+  }
 
-    setTimeout(() => {
-      this.isLoading = true;
-    }, 300);
+  private confirm(): void {
+    if (!this.therapist || !this.index) {
+      throw Error('The value of client is invalid.')
+    }
 
-    this.message('delete', therapist);
+    this.therapistsService.deleteTherapist(this.therapist.id);
+
+    this.therapists.splice(this.index, 1);
+
+    this.isDeleteDialog = !this.isDeleteDialog;
+
+    this.message('delete', this.therapist);
   }
 
   private getTherapists(): void {

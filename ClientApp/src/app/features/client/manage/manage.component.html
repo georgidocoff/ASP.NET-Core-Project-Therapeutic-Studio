@@ -73,3 +73,8 @@
   </div>
 </div>
 
+<div class="justify-content-end" *ngIf="isDeleteDialog">
+  Are You shure to delete?
+  <button type="button" class="btn btn-default" (click)="confirm()">Yes</button>
+  <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+</div>

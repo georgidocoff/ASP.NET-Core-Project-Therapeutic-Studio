@@ -23,7 +23,7 @@ export class MessagesService {
         };
         case 'delete':
         return {
-          type: 'delete',
+          type: 'success',
           msg: `Well done! You successfully ${type} ${object} .`,
           timeout: 2000
         };
