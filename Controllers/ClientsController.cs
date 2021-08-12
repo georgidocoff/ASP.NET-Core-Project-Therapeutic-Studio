@@ -1,5 +1,6 @@
 ﻿namespace TherapeuticStudio.Controllers
 {
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     using System;
@@ -8,6 +9,9 @@
 
     using TherapeuticStudio.Services.Clients;
 
+    using static Data.ApiConstants;
+
+    [Authorize]
     [ApiController]
     [Route("api/clients")]
     public class ClientsController : ControllerBase
@@ -40,6 +44,7 @@
             }
         }
 
+        [Authorize(Roles = AdministratorRoleName)]
         [HttpPatch("update/{id}")]
         public async Task<ActionResult<ClientModel>> Update(Guid id, ClientModel clientModel)
         {
@@ -55,6 +60,7 @@
 
         }
 
+        [Authorize(Roles = AdministratorRoleName)]
         [HttpDelete("delete/{id}")]
         public async Task<ActionResult<ClientModel>> Delete(Guid id)
         {

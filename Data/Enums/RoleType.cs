@@ -3,9 +3,7 @@
     public enum RoleType
     {
         Guest = 1,
-        Оperator = 2,
-        User = 3,
-        Cashier = 4,
-        Admin = 5,
+        User = 2,
+        Administrator = 3,
     }
 }

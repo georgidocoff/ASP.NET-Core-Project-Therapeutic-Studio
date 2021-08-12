@@ -1,5 +1,6 @@
 ﻿namespace TherapeuticStudio.Controllers
 {
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     using System;
@@ -8,6 +9,9 @@
 
     using TherapeuticStudio.Services.Procedures;
 
+    using static Data.ApiConstants;
+
+    [Authorize]
     [ApiController]
     [Route("api/procedures")]
     public class ProceduresController : ControllerBase
@@ -40,6 +44,7 @@
             }
         }
 
+        [Authorize(Roles = AdministratorRoleName)]
         [HttpPatch("update/{id}")]
         public async Task<ActionResult<ProcedureModel>> Update(int id, ProcedureModel procedureModel)
         {
@@ -55,6 +60,7 @@
 
         }
 
+        [Authorize(Roles = AdministratorRoleName)]
         [HttpDelete("delete/{id}")]
         public async Task<ActionResult<ProcedureModel>> Delete(int id)
         {

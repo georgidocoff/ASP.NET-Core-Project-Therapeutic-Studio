@@ -1,5 +1,6 @@
 ﻿namespace TherapeuticStudio.Controllers
 {
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     using System;
@@ -8,6 +9,9 @@
 
     using TherapeuticStudio.Services.Schedulers;
 
+    using static Data.ApiConstants;
+
+    [Authorize]
     [ApiController]
     [Route("api/schedulers")]
     public class SchedulersController : ControllerBase
@@ -63,6 +67,7 @@
 
         }
 
+        [Authorize(Roles = AdministratorRoleName)]
         [HttpDelete("delete/{id}")]
         public async Task<ActionResult<SchedulerModel>> Delete(Guid id)
         {

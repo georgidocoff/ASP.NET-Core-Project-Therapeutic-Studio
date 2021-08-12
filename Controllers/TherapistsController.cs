@@ -9,8 +9,10 @@
 
     using TherapeuticStudio.Services.Therapists;
 
+    using static Data.ApiConstants;
+
+    [Authorize]
     [ApiController]
-    //[Authorize(Roles ="Admin,User")]
     [Route("api/therapists")]
     public class TherapistsController : ControllerBase
     {
@@ -22,7 +24,6 @@
         }
 
         [HttpGet]
-        //[Authorize(Roles = "Admin,User")]
         public async Task<ActionResult<IEnumerable<TherapistModel>>> Get()
         {
             var therapists = await this.therapistService.GetTherapists();
@@ -30,7 +31,6 @@
         }
 
         [HttpPost]
-        //[Authorize(Roles = "Admin,User")]
         public async Task<ActionResult<TherapistModel>> Create(TherapistModel therapistModel)
         {
             try
@@ -44,8 +44,8 @@
             }
         }
 
+        [Authorize(Roles = AdministratorRoleName)]
         [HttpPatch("update/{id}")]
-        //[Authorize(Roles = "Admin")]
         public async Task<ActionResult<TherapistModel>> Update(int id, TherapistModel therapistModel)
         {
             try
@@ -59,8 +59,8 @@
             }
         }
 
+        [Authorize(Roles = AdministratorRoleName)]
         [HttpDelete("delete/{id}")]
-        //[Authorize(Roles = "Admin,User")]
         public async Task<ActionResult<TherapistModel>> Delete(int id)
         {
             try

@@ -1,5 +1,7 @@
 namespace TherapeuticStudio
 {
+    using IdentityServer4.Services;
+
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -66,6 +68,8 @@ namespace TherapeuticStudio
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.PrepareDatabase();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -88,6 +92,7 @@ namespace TherapeuticStudio
             app.UseRouting();
 
             app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseStatusCodePages(context => {
                 var response = context.HttpContext.Response;
