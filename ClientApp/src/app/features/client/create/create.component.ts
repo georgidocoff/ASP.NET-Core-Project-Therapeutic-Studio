@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { AlertConfig } from 'ngx-bootstrap/alert';
 import { ClientsService } from 'src/app/core/services/clients.service';
 import { MessagesService } from 'src/app/core/services/messages.service';
 
@@ -10,7 +11,7 @@ import { ClientModel } from '../../../shared/Models/ClientModel';
   selector: 'app-create',
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.css'],
-  providers: [ApiRequest, ClientsService]
+  providers: [ApiRequest, ClientsService, AlertConfig]
 })
 export class CreateComponent implements OnInit {
   form: FormGroup;

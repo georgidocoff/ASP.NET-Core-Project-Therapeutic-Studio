@@ -82,6 +82,11 @@ export class ManageComponent implements OnInit {
     this.procedures.splice(this.index, 1);
 
     this.message('delete', this.procedure);
+
+    setTimeout(() => {
+      
+      this.getProcedures();
+    }, 100);
     this.isDeleteDialog = !this.isDeleteDialog;
   }
 

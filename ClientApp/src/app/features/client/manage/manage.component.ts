@@ -85,8 +85,13 @@ export class ManageComponent implements OnInit {
     this.clientsService.deleteClient(this.client.id);
 
     this.clients.splice(this.index, 1);
-    this.isDeleteDialog = !this.isDeleteDialog;
     this.message('delete', this.client);
+
+    setTimeout(() => {
+      
+      this.getClients();
+    }, 100);
+    this.isDeleteDialog = !this.isDeleteDialog;
   }
 
   private decline(): void {

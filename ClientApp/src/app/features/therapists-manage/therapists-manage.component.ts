@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AlertConfig } from 'ngx-bootstrap/alert';
 import { ApiRequest } from 'src/app/core/api/api-therapeutick-studio';
 import { ClientsService } from 'src/app/core/services/clients.service';
+import { LocalStorageServiceService } from 'src/app/core/services/local-storage-service.service';
 import { MessagesService } from 'src/app/core/services/messages.service';
 import { ProceduresService } from 'src/app/core/services/procedures.service';
 import { SchedulersService } from 'src/app/core/services/schedulers.service';
@@ -27,6 +28,7 @@ export class TherapistsManageComponent implements OnInit {
   client: IClientModel;
   index: number;
 
+  isAdmin: boolean = false;
   isLoading: boolean = false;
   isManageDialog: boolean = false;
   isDeleteDialog: boolean = false;
@@ -35,6 +37,7 @@ export class TherapistsManageComponent implements OnInit {
 
   constructor(
     private apiRequest: ApiRequest,
+    private storage: LocalStorageServiceService,
     private clientsService: ClientsService,
     private schedulersService: SchedulersService,
     private proceduresService: ProceduresService,
@@ -42,6 +45,7 @@ export class TherapistsManageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.isAdmin = this.storage.isUserAdmin();
     this.getClients();
   }
 
@@ -128,6 +132,11 @@ export class TherapistsManageComponent implements OnInit {
     this.clientsService.deleteClient(this.client.id);
 
     this.clients.splice(this.index, 1);
+
+    setTimeout(() => {
+
+      this.getClients();
+    }, 100);
     this.isDeleteDialog = !this.isDeleteDialog;
   }
 

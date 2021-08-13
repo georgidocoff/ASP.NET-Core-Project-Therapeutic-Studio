@@ -111,10 +111,14 @@ export class ManageComponent implements OnInit {
     this.therapistsService.deleteTherapist(this.therapist.id);
 
     this.therapists.splice(this.index, 1);
-
-    this.isDeleteDialog = !this.isDeleteDialog;
-
+  
     this.message('delete', this.therapist);
+
+    setTimeout(() => {
+      
+      this.getTherapists();
+    }, 300);
+    this.isDeleteDialog = !this.isDeleteDialog;
   }
 
   private getTherapists(): void {

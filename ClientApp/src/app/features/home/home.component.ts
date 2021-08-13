@@ -128,7 +128,13 @@ export class HomeComponent {
         });
 
       this.getScheduler(this.searchDate, 0);
+    } else {
+      setTimeout(() => {
+        this.isLoading = true;
+      }, 500);
     }
+
+
   }
 
   // onClosed(dismissedAlert: AlertConfig): void {
