@@ -9,13 +9,13 @@ export class LocalStorageServiceService {
   public getUser(): any {
     return sessionStorage.getItem(`oidc.user:${environment.url}:TherapeuticStudio`);
   }
- 
-  public isUserAdmin(): boolean {
-    const getedUser = this.getUser();
-    const user = JSON.parse(getedUser);
 
+  public isUserAdmin(): boolean {
     //TODO: implements role/claim in profile
-    const isAdmin = user ? user.profile.name.includes('admin') : false;
-    return isAdmin;
+    return this.getUser() 
+            ? JSON.parse(this.getUser())
+                      .profile.name
+                      .includes('admin') 
+            : false;
   }
 }

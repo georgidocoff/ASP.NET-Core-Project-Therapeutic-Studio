@@ -1,4 +1,6 @@
-import { AfterContentInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { NavigationEnd, Router, RouterEvent } from '@angular/router';
+import { filter } from 'rxjs/operators';
 import { LocalStorageServiceService } from '../core/services/local-storage-service.service';
 
 @Component({
@@ -6,17 +8,22 @@ import { LocalStorageServiceService } from '../core/services/local-storage-servi
   templateUrl: './nav-menu.component.html',
   styleUrls: ['./nav-menu.component.css']
 })
-export class NavMenuComponent implements AfterContentInit {
+export class NavMenuComponent implements OnInit {
   isExpanded: boolean = false;
   isAuthenticated: boolean = true;
   isAdmin: boolean = false;
 
   constructor(
     private storage: LocalStorageServiceService,
+    private router:Router,
   ) { }
 
-  ngAfterContentInit() {
-    this.isAdmin = this.storage.isUserAdmin();
+  ngOnInit() {
+    this.router.events.pipe(
+      filter((event: RouterEvent) => event instanceof NavigationEnd)
+    ).subscribe(() => {
+       this.isAdmin = this.storage.isUserAdmin();
+    });
   }
 
   collapse() {
