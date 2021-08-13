@@ -29,11 +29,11 @@
             <a class="nav-link text-dark" [routerLink]="['/therapists-manage']"
               >Manage Client</a>
           </li>
-          <li *ngIf="isAuthenticated" class="nav-item ml-auto" [routerLinkActive]="['link-active']">
+          <li *ngIf="isAuthenticated && isAdmin" class="nav-item ml-auto" [routerLinkActive]="['link-active']">
             <a class="nav-link text-dark" [routerLink]="['/cash-desk/report']"
               >Cash</a>
           </li>
-          <li *ngIf="isAuthenticated" class="nav-item dropdown ml-end">
+          <li *ngIf="isAuthenticated && isAdmin" class="nav-item dropdown ml-end">
             <a class="nav-link text-dark dropdown-toggle" [routerLink] id="navbarDropdown" data-toggle="dropdown" (click)="show=!show">Administration</a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" [ngClass]="{show: show === true}">
                 <span class="col-md-1">Therapist:</span>
