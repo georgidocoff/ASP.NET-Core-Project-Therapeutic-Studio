@@ -11,7 +11,8 @@ export class LocalStorageServiceService {
   }
  
   public isUserAdmin(): boolean {
-    const user = JSON.parse(this.getUser());
+    const getedUser = this.getUser();
+    const user = JSON.parse(getedUser);
 
     //TODO: implements role/claim in profile
     const isAdmin = user ? user.profile.name.includes('admin') : false;
