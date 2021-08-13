@@ -57,21 +57,6 @@
             return paymentModel;
         }
 
-        public async Task<PaymentModel> DeletePayment(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<IEnumerable<PaymentModel>> GetClient(Guid clientId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<IEnumerable<PaymentModel>> GetPayment(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<IEnumerable<PaymentModel>> GetPaymentsByDate(string currentDate)
         {
             DateTime currDate;
@@ -89,11 +74,6 @@
                 .Select(PaymentModel.ProjectTo())
                 .Where(ts => ts.CreateTimeStamp.Value.Date == currDate.Date)
                 .ToListAsync();
-        }
-
-        public async Task<PaymentModel> UpdatePayment(PaymentModel paymentModel, Guid id)
-        {
-            throw new NotImplementedException();
         }
     }
 }
