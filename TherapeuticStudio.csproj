@@ -13,6 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="5.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="5.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.8" />
@@ -29,13 +30,13 @@
 
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Compile Remove="TherapeuticStudio.Test\Pipeline\**" />
     <Content Remove="$(SpaRoot)**" />
+    <Content Remove="TherapeuticStudio.Test\Pipeline\**" />
+    <EmbeddedResource Remove="TherapeuticStudio.Test\Pipeline\**" />
     <None Remove="$(SpaRoot)**" />
+    <None Remove="TherapeuticStudio.Test\Pipeline\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="TherapeuticStudio.Test\Pipeline\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
