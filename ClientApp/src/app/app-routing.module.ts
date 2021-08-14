@@ -6,7 +6,6 @@ import { AccessDeniedComponent } from './shared/access-denied/access-denied.comp
 import { ErrorComponent } from './shared/error/error.component';
 import { NotFoundComponent } from './shared/not-found/not-found.component';
 
-
 @NgModule({
   declarations: [],
   imports: [
