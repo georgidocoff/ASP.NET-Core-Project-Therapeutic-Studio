@@ -58,11 +58,11 @@
             {
                 procedure.Name = procedureModel.Name;
             }
-            else if (procedureModel.Duration != 0)
+            if (procedureModel.Duration != 0)
             {
                 procedure.Duration = procedureModel.Duration;
             }
-            else if (procedureModel.Price != 0m)
+            if (procedureModel.Price != 0m)
             {
                 procedure.Price = procedureModel.Price;
             }
