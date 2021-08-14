@@ -43,7 +43,7 @@ import { AppRoutingModule } from './app-routing.module';
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpCustomErrorInterceptor, multi: true },
-    //{ provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true },
     { provide: ApiRequest, useClass: ApiRequest, multi: true }
   ],
   bootstrap: [AppComponent]
