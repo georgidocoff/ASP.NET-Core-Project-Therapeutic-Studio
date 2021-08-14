@@ -19,6 +19,10 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { ApiRequest } from './core/api/api-therapeutick-studio';
+import { NotFoundComponent } from './shared/not-found/not-found.component';
+import { ErrorComponent } from './shared/error/error.component';
+import { AccessDeniedComponent } from './shared/access-denied/access-denied.component';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -37,10 +41,7 @@ import { ApiRequest } from './core/api/api-therapeutick-studio';
     BsDropdownModule.forRoot(),
     BsDatepickerModule.forRoot(),
     ProgressbarModule.forRoot(),
-    RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'features', loadChildren: () => import('./features/features.module').then(m => m.FeaturesModule), canActivate: [AuthorizeGuard] },
-    ])
+    AppRoutingModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true },
