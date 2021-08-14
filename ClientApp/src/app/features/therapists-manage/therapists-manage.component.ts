@@ -145,11 +145,17 @@ export class TherapistsManageComponent implements OnInit {
     this.isLoading = false;
 
     this.clientsService.updateClient(client.id, client)
-      .subscribe(data => {
-
-        setTimeout(() => {
+      .subscribe({
+        next: () => {
           this.isLoading = true;
-        }, 300);
+
+          this.message('update', client);
+
+          this.getClients();
+        },
+        error: (err) => {
+          console.error(err);
+        }
       });
   }
 

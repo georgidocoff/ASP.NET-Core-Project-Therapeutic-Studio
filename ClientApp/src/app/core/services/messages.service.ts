@@ -45,8 +45,6 @@ export class MessagesService {
           msg: `Warning! Better check this ${object}.`,
           timeout: 2000
         };
-      default:
-        throw Error('This is invalid message.')
     }
   }
 }

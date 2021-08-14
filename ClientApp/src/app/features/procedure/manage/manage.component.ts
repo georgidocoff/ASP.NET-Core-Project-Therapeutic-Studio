@@ -39,8 +39,6 @@ export class ManageComponent implements OnInit {
     setTimeout(() => {
       this.isLoading = true;
     }, 300);
-
-    this.message('update', procedure);
   }
 
   private cancel() {
@@ -53,10 +51,17 @@ export class ManageComponent implements OnInit {
   private save(procedure: IProcedureModel) {
     this.isLoading = false;
     this.proceduresService.updateProcedure(procedure.id, procedure)
-      .subscribe(data => {
+      .subscribe({
+        next: () => {          
         this.isManageDialog = !this.isManageDialog;
 
+        this.message('update', procedure);
+
         this.getProcedures();
+        },
+        error: (err) => {
+          console.error(err);
+        }
       });
   }
 

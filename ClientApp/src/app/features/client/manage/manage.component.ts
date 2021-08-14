@@ -52,12 +52,17 @@ export class ManageComponent implements OnInit {
   private save(client: IClientModel) {
     this.isLoading = false;
     this.clientsService.updateClient(client.id, client)
-      .subscribe(data => {
+      .subscribe({
+        next: () => {          
         this.isManageDialog = !this.isManageDialog;
 
         this.message('update', client);
 
         this.getClients();
+        },
+        error: (err) => {
+          console.error(err);
+        }
       });
   }
 

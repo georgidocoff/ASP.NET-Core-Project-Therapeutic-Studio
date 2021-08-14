@@ -50,9 +50,9 @@ export class ManageComponent implements OnInit {
     this.isManageDialog = !this.isManageDialog;
     this.therapist = { ...therapist };
 
-    this.selectPosition = this.infrastructure.positions[therapist.positionType].viewValue;
+    this.selectPosition = this.positions[therapist.positionType].viewValue;
 
-    this.selectRole = this.infrastructure.roles[therapist.roleType].viewValue;
+    this.selectRole = this.roles[therapist.roleType].viewValue;
 
     setTimeout(() => {
       this.isLoading = true;
@@ -71,12 +71,17 @@ export class ManageComponent implements OnInit {
     this.isLoading = false;
 
     this.therapistsService.updateTherapist(therapist.id, therapist)
-      .subscribe(data => {
+      .subscribe({
+        next: () => {          
         this.isManageDialog = !this.isManageDialog;
 
         this.message('update', therapist);
 
         this.getTherapists();
+        },
+        error: (err) => {
+          console.error(err);
+        }
       });
   }
 

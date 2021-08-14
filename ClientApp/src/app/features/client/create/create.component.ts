@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AlertConfig } from 'ngx-bootstrap/alert';
 import { ClientsService } from 'src/app/core/services/clients.service';
 import { MessagesService } from 'src/app/core/services/messages.service';
@@ -20,6 +21,7 @@ export class CreateComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
+    private router: Router,
     private clientsService: ClientsService,
     private messages: MessagesService,
   ) { }
@@ -47,13 +49,18 @@ export class CreateComponent implements OnInit {
     currClient.ucn = this.form.value.ucn;
 
     this.clientsService.createClient(currClient)
-      .subscribe(data => {
-
-        setTimeout(() => {
+      .subscribe({
+        next: () => {
           this.isLoading = true;
-        }, 300);
+          this.message('create', currClient);
+          setTimeout(() => {
 
-        this.message('create', currClient);
+            this.router.navigate(['/']);
+          }, 2000);
+        },
+        error: (err) => {
+          console.error(err);
+        }
       });
 
     this.form.reset();

@@ -7,6 +7,7 @@ import { TherapistModel } from '../../../shared/Models/TherapistModel';
 import { TherapistsService } from 'src/app/core/services/therapists.service';
 import { MessagesService } from 'src/app/core/services/messages.service';
 import { AlertConfig } from 'ngx-bootstrap/alert';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create',
@@ -25,6 +26,7 @@ export class CreateComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
+    private router: Router,
     private infrastructure: Infrastructure,
     private therapistsService: TherapistsService,
     private messages: MessagesService,
@@ -59,14 +61,19 @@ export class CreateComponent implements OnInit {
     currTherapist.roleType = +this.form.value.roleType;
 
     this.therapistsService.createTherapist(currTherapist)
-      .subscribe(res => {
-
-        setTimeout(() => {
+      .subscribe({
+        next: () => {
           this.isLoading = true;
-        }, 300);
+          this.message('create', currTherapist);
+          setTimeout(() => {
 
-        this.message('create', currTherapist);
-      });
+            this.router.navigate(['/']);
+          }, 2000);
+        },
+        error: (err) => {
+          console.error(err);
+        }
+      });   
 
     this.form.reset();
   }
