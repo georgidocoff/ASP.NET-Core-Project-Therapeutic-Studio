@@ -4,9 +4,12 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ProgressBarComponent } from './progress-bar/progress-bar.component';
 import { AlertModule } from 'ngx-bootstrap/alert';
+import { NotFoundComponent } from './not-found/not-found.component';
+import { ErrorComponent } from './error/error.component';
+import { AccessDeniedComponent } from './access-denied/access-denied.component';
 
 @NgModule({
-  declarations: [ProgressBarComponent],
+  declarations: [ProgressBarComponent, NotFoundComponent, ErrorComponent, AccessDeniedComponent],
   imports: [
     CommonModule,
     FormsModule,
