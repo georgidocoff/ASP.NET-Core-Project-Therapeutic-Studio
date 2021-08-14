@@ -121,19 +121,19 @@
                 new Client {
                     FirstName = "John",
                     LastName = "Dinson",
-                    UCN = "9999999999"
+                    UCN = "FFFFFFFFFF"
 
                 },
                 new Client {
                    FirstName = "Peter",
                     LastName = "Petrov",
-                    UCN = "8211115512"
+                    UCN = "FFFFFFFFFF"
                 },
                 new Client {
                     FirstName = "Eva",
                     MiddleName ="Denimireva",
                     LastName = "Nikova",
-                    UCN = "9999999999"
+                    UCN = "FFFFFFFFFF"
                 }
             });
 
