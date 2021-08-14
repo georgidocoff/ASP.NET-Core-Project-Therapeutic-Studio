@@ -11,7 +11,7 @@
 
     public class ProcedureService : IProcedureService
     {
-        private ApplicationDbContext applicationDbContext;
+        private readonly ApplicationDbContext applicationDbContext;
 
         public ProcedureService(ApplicationDbContext applicationDbContext)
         {

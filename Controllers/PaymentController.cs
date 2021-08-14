@@ -22,7 +22,7 @@
     [Route("api/payments")]
     public class PaymentController : ControllerBase
     {
-        private IPaymentService paymentService;
+        private readonly IPaymentService paymentService;
 
         public PaymentController(IPaymentService paymentService)
         {
