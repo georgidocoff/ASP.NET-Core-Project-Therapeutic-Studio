@@ -93,7 +93,7 @@
                     Price = 10
                 },
                 new Procedure {
-                    Name = "massage",
+                    Name = "Massage",
                     Duration = 30,
                     Price = 15
                 },
