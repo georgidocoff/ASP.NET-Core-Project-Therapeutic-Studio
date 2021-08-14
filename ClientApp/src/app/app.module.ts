@@ -19,7 +19,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { ApiRequest } from './core/api/api-therapeutick-studio';
-import { HttpCustomErrorInterceptor } from './core/Interceptors/http-custom-error.interceptor';
+import { HttpCustomErrorInterceptor } from './core/interceptors/http-custom-error.interceptor';
 import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
