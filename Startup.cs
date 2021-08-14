@@ -77,7 +77,7 @@ namespace TherapeuticStudio
             }
             else
             {
-                app.UseExceptionHandler("/Error");
+                app.UseExceptionHandler("/Errror");
                 app.UseHsts();
             }
 
