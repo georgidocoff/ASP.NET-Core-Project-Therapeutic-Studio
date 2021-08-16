@@ -21,14 +21,17 @@
           <div class="field">
             <input class="form-control mb-3" formControlName="name" id="name" type="text" pInputText
               placeholder="Procedure Name">
+              <span *ngIf="isNotValid('name')" class="invalid"> is required</span>
           </div>
           <div class="field">
             <input class="form-control mb-3" formControlName="duration" id="duration" type="text" pInputText
               placeholder="Duration">
+              <span *ngIf="isNotValid('duration')" class="invalid"> is required</span>
           </div>
           <div class="field">
             <input class="form-control mb-3" formControlName="price" id="price" type="text" pInputText
               placeholder="Price">
+              <span *ngIf="isNotValid('price')" class="invalid"> is required</span>
           </div>
           <div class="mt-3 mb-3">
             <span>

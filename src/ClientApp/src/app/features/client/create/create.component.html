@@ -21,6 +21,7 @@
           <div class="field">
             <input class="form-control mb-3" formControlName="firstName" id="firstName" type="text" pInputText
               placeholder="First Name">
+              <span *ngIf="isNotValid('firstName')" class="invalid"> is required</span>
           </div>
           <div class="field">
             <input class="form-control mb-3" formControlName="middleName" id="middleName" type="text" pInputText
@@ -29,9 +30,11 @@
           <div class="field">
             <input class="form-control mb-3" formControlName="lastName" id="lastName" type="text" pInputText
               placeholder="Last Name">
+              <span *ngIf="isNotValid('lastName')" class="invalid"> is required</span>
           </div>
           <div class="field">
             <input class="form-control mb-3" formControlName="ucn" id="ucn" type="text" pInputText placeholder="UCN">
+            <span *ngIf="isNotValid('ucn')" class="invalid"> is required</span>
           </div>
           <div class="mt-3 mb-3">
             <span>

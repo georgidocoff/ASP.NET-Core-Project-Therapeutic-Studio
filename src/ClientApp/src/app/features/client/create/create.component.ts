@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertConfig } from 'ngx-bootstrap/alert';
 import { ClientsService } from 'src/app/core/services/clients.service';
@@ -18,6 +18,7 @@ export class CreateComponent implements OnInit {
   form: FormGroup;
   alerts: IAlertModel[] = [];
   isLoading: boolean = false;
+  isSubmitted: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -27,11 +28,13 @@ export class CreateComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.isSubmitted = false;
+
     this.form = this.fb.group({
-      firstName: [null],
+      firstName: [null, Validators.required],
       middleName: [null],
-      lastName: [null],
-      ucn: [null],
+      lastName: [null, Validators.required],
+      ucn: [null, Validators.required],
     });
 
     setTimeout(() => {
@@ -41,33 +44,41 @@ export class CreateComponent implements OnInit {
 
   onSubmit() {
     this.isLoading = false;
+    this.isSubmitted = true;
 
-    let currClient = new ClientModel;
-    currClient.firstName = this.form.value.firstName;
-    currClient.middleName = this.form.value.middleName;
-    currClient.lastName = this.form.value.lastName;
-    currClient.ucn = this.form.value.ucn;
+    if (this.form.valid) {
 
-    this.clientsService.createClient(currClient)
-      .subscribe({
-        next: () => {
-          this.isLoading = true;
-          this.message('create', currClient);
-          setTimeout(() => {
+      let currClient = new ClientModel;
+      currClient.firstName = this.form.value.firstName;
+      currClient.middleName = this.form.value.middleName;
+      currClient.lastName = this.form.value.lastName;
+      currClient.ucn = this.form.value.ucn;
 
-            this.router.navigate(['/']);
-          }, 2000);
-        },
-        error: (err) => {
-          console.error(err);
-        }
-      });
+      this.clientsService.createClient(currClient)
+        .subscribe({
+          next: () => {
+            this.isLoading = true;
+            this.message('create', currClient);
+            setTimeout(() => {
 
-    this.form.reset();
+              this.router.navigate(['/']);
+            }, 2000);
+          },
+          error: (err) => {
+            console.error(err);
+          }
+        });
+
+      this.form.reset();
+    }
   }
 
   private message(type: string, client: IClientModel): void {
     this.alerts.push(this.messages
       .get(type, `${client.firstName} ${client.lastName}`));
+  }
+
+  private isNotValid(controlName: string): boolean {
+    return (this.form.controls[controlName].invalid && this.isSubmitted) || (this.form.controls[controlName].dirty && this.form.controls[controlName].invalid);
   }
 }
