@@ -91,6 +91,8 @@ namespace TherapeuticStudio
 
             app.UseRouting();
 
+            app.UseStatusCodePagesWithReExecute( "/Errror","?code={0}");
+
             app.UseAuthentication();
             app.UseAuthorization();
 
