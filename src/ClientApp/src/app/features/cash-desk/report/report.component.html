@@ -38,7 +38,7 @@
 
     </div>
 
-    <div *ngIf="payments?payments.length>0:false">
+    <div *ngIf="isPaymentDataAvailable">
       <div class="flex flex-column flex-md-row jc-md-between table-header">
         <h5 class="mt-2 mb-2">Time line: </h5>
       </div>
@@ -60,7 +60,7 @@
       </table>
     </div>
 
-    <div *ngIf="payments?payments.length==0:false">
+    <div *ngIf="isNoDataAvailable">
       <h5 class="mt-2 mb-2">No data for current day.</h5>
     </div>
   </div>
