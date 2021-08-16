@@ -44,7 +44,7 @@ export class ManageComponent implements OnInit {
     this.getTherapists();
   }
 
-  public editTherapist(therapist: ITherapistModel): void {
+  public viewTherapist(therapist: ITherapistModel): void {
     this.isLoading = false;
 
     this.isManageDialog = !this.isManageDialog;

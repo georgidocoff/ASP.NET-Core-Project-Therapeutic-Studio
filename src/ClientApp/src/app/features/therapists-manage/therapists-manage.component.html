@@ -29,8 +29,8 @@
         <td>{{ client.middleName }}</td>
         <td>{{ client.lastName }}</td>
         <td>
-          <input type="button" value="edit" class="btn btn-success mr-2" (click)="editClient(client)" />
-          <input *ngIf="isAdmin" type="button" value="del." class="btn btn-warning" (click)="deleteClient(client,i)" />
+          <input type="button" value="view" class="btn btn-success mr-2" (click)="viewClient(client)" />
+          <input *ngIf="isAdmin" type="button" value="dell." class="btn btn-warning" (click)="deleteClient(client,i)" />
         </td>
       </tr>
     </tbody>

@@ -50,7 +50,7 @@ export class TherapistsManageComponent implements OnInit {
   }
 
 
-  public editClient(client: IClientModel): void {
+  public viewClient(client: IClientModel): void {
     this.isLoading = false;
     this.amountPrice = 0;
     this.isManageDialog = !this.isManageDialog;

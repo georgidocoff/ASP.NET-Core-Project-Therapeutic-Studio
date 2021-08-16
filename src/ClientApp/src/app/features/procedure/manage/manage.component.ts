@@ -30,7 +30,7 @@ export class ManageComponent implements OnInit {
     this.getProcedures();
   }
 
-  public editProcedure(procedure: IProcedureModel): void {
+  public viewProcedure(procedure: IProcedureModel): void {
     this.isLoading = false;
 
     this.isManageDialog = !this.isManageDialog;

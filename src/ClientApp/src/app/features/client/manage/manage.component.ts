@@ -31,7 +31,7 @@ export class ManageComponent implements OnInit {
     this.getClients();
   }
 
-  public editClient(client: IClientModel): void {
+  public viewClient(client: IClientModel): void {
     this.isLoading = false;
 
     this.isManageDialog = !this.isManageDialog;
