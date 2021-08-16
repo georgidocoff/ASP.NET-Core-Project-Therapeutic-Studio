@@ -23,6 +23,8 @@ export class ReportComponent implements OnInit {
   procedures: IProcedureModel[];
   procedure: IProcedureModel;
 
+  isPaymentDataAvailable: boolean = false;
+  isNoDataAvailable: boolean = false;
   isLoading: boolean = false;
   alerts: IAlertModel[] = [];
 
@@ -41,6 +43,8 @@ export class ReportComponent implements OnInit {
   }
 
   private toggle() {
+    this.isNoDataAvailable = false;
+    this.isPaymentDataAvailable = false;
     this.isLoading = false;
     this.unpaid = 0;
     this.paid = 0;
@@ -56,6 +60,16 @@ export class ReportComponent implements OnInit {
             this.paid += paiment.price;
           }
         });
+
+        if (this.payments
+          ? this.payments.length > 0
+          : false) {
+          this.isPaymentDataAvailable = true;
+        } else if (this.payments
+          ? this.payments.length == 0
+          : false) {
+          this.isNoDataAvailable = true;
+        }
 
         setTimeout(() => {
           this.isLoading = true;
