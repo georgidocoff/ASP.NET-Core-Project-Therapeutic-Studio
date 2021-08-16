@@ -23,7 +23,7 @@ export class ApiRequest {
             .post<any>(environment.url + '/api/therapists', therapist, httpOptions)
             .pipe(
                 tap((therapist: any) =>
-                    console.log(`added therarapist = ${therapist.id}`
+                    (`added therarapist = ${therapist.id}`
                     )),
                 catchError(async () => console.error())
             );
@@ -42,7 +42,7 @@ export class ApiRequest {
         return this.http.patch<ITherapistModel>(`${environment.url}` + `/api/therapists/update/${id}`, therapistModel, httpOptions)
             .pipe(
                 tap((therapistModel: any) =>
-                    console.log(`update therapist = ${id}`
+                    (`update therapist = ${id}`
                     )),
                 catchError(async () => console.error())
             );
@@ -52,7 +52,7 @@ export class ApiRequest {
         this.http.delete(environment.url + `/api/therapists/delete/${therapistId}`)
             .subscribe({
                 next: data => {
-                    console.log('Delete successful');
+                    ('Delete successful');
                 },
                 error: error => {
                     console.error('There was an error!', error);
@@ -69,7 +69,7 @@ export class ApiRequest {
             .post<any>(environment.url + '/api/procedures', procedure, httpOptions)
             .pipe(
                 tap((procedure: any) =>
-                    console.log(`added procedure = ${procedure.id}`
+                    (`added procedure = ${procedure.id}`
                     )),
                 catchError(async () => console.error())
             );
@@ -88,7 +88,7 @@ export class ApiRequest {
         return this.http.patch<IProcedureModel>(`${environment.url}` + `/api/procedures/update/${id}`, procedureModel, httpOptions)
             .pipe(
                 tap((procedureModel: any) =>
-                    console.log(`update procedure = ${id}`
+                    (`update procedure = ${id}`
                     )),
                 catchError(async () => console.error())
             );
@@ -98,7 +98,7 @@ export class ApiRequest {
         this.http.delete(environment.url + `/api/procedures/delete/${procedureId}`)
             .subscribe({
                 next: data => {
-                    console.log('Delete successful');
+                    ('Delete successful');
                 },
                 error: error => {
                     console.error('There was an error!', error);
@@ -115,7 +115,7 @@ export class ApiRequest {
             .post<any>(environment.url + '/api/clients', client, httpOptions)
             .pipe(
                 tap((client: any) =>
-                    console.log(`added client = ${client.id}`
+                    (`added client = ${client.id}`
                     )),
                 catchError(async () => console.error())
             );
@@ -134,7 +134,7 @@ export class ApiRequest {
         return this.http.patch<IClientModel>(`${environment.url}` + `/api/clients/update/${id}`, clientModel, httpOptions)
             .pipe(
                 tap((clientModel: any) =>
-                    console.log(`update client = ${id}`
+                    (`update client = ${id}`
                     )),
                 catchError(async () => console.error())
             );
@@ -144,7 +144,7 @@ export class ApiRequest {
         this.http.delete(environment.url + `/api/clients/delete/${clientId}`)
             .subscribe({
                 next: data => {
-                    console.log('Delete successful');
+                    ('Delete successful');
                 },
                 error: error => {
                     console.error('There was an error!', error);
@@ -161,7 +161,7 @@ export class ApiRequest {
             .post<any>(environment.url + '/api/schedulers', scheduler, httpOptions)
             .pipe(
                 tap((scheduler: any) =>
-                    console.log(`added scheduler = ${scheduler.id}`
+                    (`added scheduler = ${scheduler.id}`
                     )),
                 catchError(async () => console.error())
             );
@@ -185,7 +185,7 @@ export class ApiRequest {
         return this.http.patch<ISchedulerModel>(`${environment.url}` + `/api/schedulers/update/${id}`, schedulerModel, httpOptions)
             .pipe(
                 tap((schedulerModel: any) =>
-                    console.log(`update scheduler = ${id}`
+                    (`update scheduler = ${id}`
                     )),
                 catchError(async () => console.error())
             );
@@ -200,7 +200,7 @@ export class ApiRequest {
             .post<any>(environment.url + `/api/payments/?schedulerId=${schedulerId}`, payment, httpOptions)
             .pipe(
                 tap((payment: any) =>
-                    console.log(`added payment = ${payment.id}`
+                    (`added payment = ${payment.id}`
                     )),
                 catchError(async () => console.error())
             );
