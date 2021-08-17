@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { LocalStorageServiceService } from '../../core/services/local-storage-service.service';
 import { ApiRequest } from '../../core/api/api-therapeutick-studio';
@@ -77,6 +77,8 @@ export class HomeComponent {
   schedulers: ISchedulerModel[];
   scheduler: ISchedulerModel;
 
+  isSubmitted: boolean = false;
+
   constructor(
     private storage: LocalStorageServiceService,
     private apiRequest: ApiRequest,
@@ -91,8 +93,8 @@ export class HomeComponent {
 
   ngOnInit() {
     this.form = this.fb.group({
-      clientFullName: [null],
-      currProcedure: [null],
+      clientFullName: [null, Validators.required],
+      currProcedure: [null, Validators.required],
       therapistFullName: [null],
       reservedHour: [null],
       paymentType: [null],
@@ -174,53 +176,62 @@ export class HomeComponent {
   }
 
   private save(therapistFullName, reservedHour): void {
-    this.show = !this.show;
-    let currentScheduler = new SchedulerModel;
-    currentScheduler.timeStamp = reservedHour;
-    currentScheduler.procedureId = !this.procedure
-      ? this.procedures.find(x => x.name == this.form.value.currProcedure).id
-      : this.procedure.id;
-    currentScheduler.clientId = this.clientsService.getClientId(
+    this.isSubmitted = true;
+
+    const currentProcedure = !this.procedure
+      ? this.procedures.find(x => x.name == this.form.value.currProcedure)
+      : this.procedure;
+
+    const currentClient = this.clientsService.getClientId(
       !this.form.value.clientFullName
         ? this.clientFullName
         : this.form.value.clientFullName
       , this.clients);
-    currentScheduler.therapistId = this.therapistsService.getTherapistId(therapistFullName, this.therapists);
-    currentScheduler.paymentType = this.form.value.paymentType ? this.form.value.paymentType : 0;
 
-    if (!this.paymentMethodAccess) {
-      this.apiRequest.createScheduler(currentScheduler)
-        .subscribe(data => {
-          this.getScheduler(this.searchDate, 0);
+    if (this.form.valid) {
+      this.show = !this.show;
 
-          this.message('create', ` new scheduler.`)
-          this.createWorkHours();
-        });
+      let currentScheduler = new SchedulerModel;
+      currentScheduler.timeStamp = reservedHour;
+      currentScheduler.procedureId = currentProcedure.id;
+      currentScheduler.clientId = currentClient;
+      currentScheduler.therapistId = this.therapistsService.getTherapistId(therapistFullName, this.therapists);
+      currentScheduler.paymentType = this.form.value.paymentType ? this.form.value.paymentType : 0;
 
-    } else {
-      this.payment = new PaymentModel;
-      this.payment.clientId = currentScheduler.clientId;
-      this.payment.createAt = new Date;
-      this.payment.type = currentScheduler.paymentType;
-      this.payment.price = this.procedure.price;
+      if (!this.paymentMethodAccess) {
+        this.apiRequest.createScheduler(currentScheduler)
+          .subscribe(data => {
+            this.getScheduler(this.searchDate, 0);
 
-      this.paymentsService.createPayment(this.payment, this.scheduler.id)
-        .subscribe(data => {
+            this.message('create', ` new scheduler.`)
+            this.createWorkHours();
+          });
 
-          data ? currentScheduler.paymentId = data.id : null;
+      } else {
+        this.payment = new PaymentModel;
+        this.payment.clientId = currentScheduler.clientId;
+        this.payment.createAt = new Date;
+        this.payment.type = currentScheduler.paymentType;
+        this.payment.price = this.procedure.price;
 
-          this.apiRequest.updateScheduler(this.scheduler.id, currentScheduler)
-            .subscribe(data => {
-              this.message('update',` scheduler`)
+        this.paymentsService.createPayment(this.payment, this.scheduler.id)
+          .subscribe(data => {
 
-              this.getScheduler(this.searchDate, 0);
+            data ? currentScheduler.paymentId = data.id : null;
 
-              this.createWorkHours();
-            });
-        })
+            this.apiRequest.updateScheduler(this.scheduler.id, currentScheduler)
+              .subscribe(data => {
+                this.message('update', ` scheduler`)
+
+                this.getScheduler(this.searchDate, 0);
+
+                this.createWorkHours();
+              });
+          })
+      }
+
+      this.form.reset();
     }
-
-    this.form.reset();
   }
 
   public isDataAvaible(column, rowData, index): boolean {
@@ -263,6 +274,7 @@ export class HomeComponent {
   }
 
   private selectTherapist(therapist, workHour, event): void {
+    this.isSubmitted = false;
     this.clientFullName = '';
     this.procedure = null;
     this.paymentMethodAccess = false;
@@ -363,5 +375,9 @@ export class HomeComponent {
   private message(type: string, output: string): void {
     this.alerts.push(this.messages
       .get(type, output));
+  }
+
+  private isNotValid(controlName: string): boolean {
+    return (this.form.controls[controlName].invalid && this.isSubmitted) || (this.form.controls[controlName].dirty && this.form.controls[controlName].invalid);
   }
 }

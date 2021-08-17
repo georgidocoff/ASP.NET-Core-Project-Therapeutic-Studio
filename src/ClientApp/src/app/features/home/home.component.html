@@ -71,6 +71,7 @@
               <input #itemSelect class="form-control mb-3" formControlName="clientFullName"
                 [typeahead]="searchClients()" id="clientFullName" type="text" placeholder="Client full Name"
                 value="{{clientFullName}}" (change)="getClientId(clientFullName)">
+                <span *ngIf="isNotValid('clientFullName')" class="invalid"> is required</span>
             </div>
             <div class="field">
               <select class="form-control mb-3" id="currProcedure" formControlName="currProcedure"
@@ -80,6 +81,7 @@
                   <span>{{procedure.name}}</span>
                 </option>
               </select>
+              <span *ngIf="isNotValid('currProcedure')" class="invalid"> is required</span>
             </div>
             <div class="field">
               <input class="form-control mb-3" id="therapistFullName" formControlName="therapistFullName"
