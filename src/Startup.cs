@@ -96,14 +96,6 @@ namespace TherapeuticStudio
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseStatusCodePages(context => {
-                var response = context.HttpContext.Response;
-                if (response.StatusCode == (int)HttpStatusCode.Unauthorized ||
-                    response.StatusCode == (int)HttpStatusCode.Forbidden)
-                    response.Redirect("/authentication/login");
-                return Task.CompletedTask;
-            });
-
             app.UseIdentityServer();
             app.UseAuthorization();
 
