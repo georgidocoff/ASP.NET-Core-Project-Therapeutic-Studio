@@ -17,6 +17,11 @@
 
   <body class="landing-body">
     <div class="landing-wrapper">
+      <div>
+        This Platform is easy to use and scheduling Therapeutic Studio, Payments and Client. Feel Free to use and test
+        for personal use :). You can find a way to manage business and so..
+        <br>
+      </div>
       <div class="image">
         <img style="width: fit-content;" src="../../../assets/layout/image/home-guest.jpg" alt="home-guest">
       </div>
@@ -31,7 +36,7 @@
     </button>
     <button type="button" class="btn btn-info" (click)="currentDay()" [disabled]="isCurrentDayToday"> today </button>
 
-    <span style="size: 16;" class="nav justify-content-end">Current Date: 
+    <span style="size: 16;" class="nav justify-content-end">Current Date:
       {{currentDate}}
     </span>
   </div>
@@ -71,7 +76,7 @@
               <input #itemSelect class="form-control mb-3" formControlName="clientFullName"
                 [typeahead]="searchClients()" id="clientFullName" type="text" placeholder="Client full Name"
                 value="{{clientFullName}}" (change)="getClientId(clientFullName)">
-                <span *ngIf="isNotValid('clientFullName')" class="invalid"> is required</span>
+              <span *ngIf="isNotValid('clientFullName')" class="invalid"> is required</span>
             </div>
             <div class="field">
               <select class="form-control mb-3" id="currProcedure" formControlName="currProcedure"
@@ -100,15 +105,15 @@
               <input type="radio" formControlName="paymentType" value="1" [checked]="isCashDeskPaid" /> cash desk
               <input type="radio" formControlName="paymentType" value="2" [checked]="isBankPaid" /> bank
             </div>
-              <div class="mt-3 mb-3">
-                <span>
-                  <button type="submit" class="btn btn-primary" (click)="cancel()">Cancel</button>
-                  <button type="submit" class="btn btn-primary">Save</button>
-                </span>
-              </div>
+            <div class="mt-3 mb-3">
+              <span>
+                <button type="submit" class="btn btn-primary" (click)="cancel()">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save</button>
+              </span>
             </div>
           </div>
         </div>
       </div>
+    </div>
   </form>
 </div>
