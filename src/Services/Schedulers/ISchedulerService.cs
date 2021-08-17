@@ -13,7 +13,5 @@
         Task<SchedulerModel> CreateScheduler(SchedulerModel schedulerModel);
 
         Task<SchedulerModel> UpdateScheduler(SchedulerModel schedulerModel, Guid id);
-
-        Task<SchedulerModel> DeleteScheduler(Guid id);
     }
 }

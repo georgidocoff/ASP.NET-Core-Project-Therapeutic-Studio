@@ -41,15 +41,6 @@
             return schedulerModel;
         }
 
-        public async Task<SchedulerModel> DeleteScheduler(Guid id)
-        {
-            var scheduler = this.applicationDbContext.Schedulers.FirstOrDefault(s => s.Id == id);
-            this.applicationDbContext.Remove(scheduler);
-
-            await this.applicationDbContext.SaveChangesAsync();
-            return new SchedulerModel { Id = id };
-        }
-
         public async Task<IEnumerable<SchedulerModel>> GetSchedulerClient(Guid clientId)
         {
             return await applicationDbContext.Schedulers
@@ -87,6 +78,11 @@
         public async Task<SchedulerModel> UpdateScheduler(SchedulerModel schedulerModel, Guid id)
         {
             var scheduler = this.applicationDbContext.Schedulers.FirstOrDefault(x => x.Id == id);
+
+            if (scheduler==null)
+            {
+                throw new InvalidOperationException("Null reference argument exception.");
+            }
 
             if (schedulerModel.Id != Guid.Empty)
             {

@@ -66,20 +66,5 @@
             }
 
         }
-
-        [Authorize(Roles = AdministratorRoleName)]
-        [HttpDelete("delete/{id}")]
-        public async Task<ActionResult<SchedulerModel>> Delete(Guid id)
-        {
-            try
-            {
-                var scheduler = await this.schedulerService.DeleteScheduler(id);
-                return this.Ok(scheduler);
-            }
-            catch (Exception ex)
-            {
-                return this.BadRequest(ex.Message);
-            }
-        }
     }
 }
