@@ -9,6 +9,10 @@
             string output = string.Empty;
             int modifierDigit = 12;
 
+            if (ucn==null)
+            {
+                throw new InvalidOperationException("Null reference argument exception.");
+            }
 
             switch (mode)
             {

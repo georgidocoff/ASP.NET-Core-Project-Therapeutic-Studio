@@ -29,6 +29,7 @@
             this.paymentService = paymentService;
         }
 
+        [Authorize(Roles = AdministratorRoleName)]
         [HttpPost]
         public async Task<ActionResult<PaymentModel>> Create(PaymentModel paymentModel, Guid schedulerId)
         {
@@ -43,7 +44,7 @@
             }
         }
 
-
+        [Authorize(Roles = AdministratorRoleName)]
         [HttpGet("date")]
         public async Task<ActionResult<IEnumerable<PaymentModel>>> GetDates(string current)
         {

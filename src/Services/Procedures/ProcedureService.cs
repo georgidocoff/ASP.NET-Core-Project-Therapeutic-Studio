@@ -38,6 +38,11 @@
         public async Task<ProcedureModel> DeleteProcedure(int id)
         {
             var procedure = this.applicationDbContext.Procedures.FirstOrDefault(s => s.Id == id);
+            if (procedure == null)
+            {
+                throw new System.Exception("Null reference argument exception.");
+            }
+
             this.applicationDbContext.Procedures.Remove(procedure);
             await this.applicationDbContext.SaveChangesAsync();
             return new ProcedureModel { Id = id };
@@ -53,8 +58,12 @@
         public async Task<ProcedureModel> UpdateProcedure(ProcedureModel procedureModel, int id)
         {
             var procedure = this.applicationDbContext.Procedures.FirstOrDefault(x => x.Id == id);
+            if (procedure == null)
+            {
+                throw new System.Exception("Null reference argument exception.");
+            }
 
-            if (procedureModel.Name != string.Empty)
+            if (procedureModel.Name != null)
             {
                 procedure.Name = procedureModel.Name;
             }
@@ -66,6 +75,7 @@
             {
                 procedure.Price = procedureModel.Price;
             }
+
 
             this.applicationDbContext.Procedures.Update(procedure);
 

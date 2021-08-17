@@ -24,10 +24,19 @@
         {
             var scheduler = this.applicationDbContext.Schedulers
                                     .FirstOrDefault(x => x.Id == schedulerId);
+            if (scheduler == null)
+            {
+                throw new Exception("Null reference argument exception.");
+            }
 
             if (scheduler.PaymentId != null)
             {
                 var currentPayment = this.applicationDbContext.Payments.FirstOrDefault(p => p.Id == scheduler.PaymentId);
+
+                if (currentPayment == null)
+                {
+                    throw new Exception("Null reference argument exception.");
+                }
 
                 currentPayment.PaymentType = paymentModel.Type;
                 currentPayment.Price = paymentModel.Price != 0 ? paymentModel.Price : currentPayment.Price;

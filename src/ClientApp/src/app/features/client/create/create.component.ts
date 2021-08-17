@@ -28,8 +28,6 @@ export class CreateComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.isSubmitted = false;
-
     this.form = this.fb.group({
       firstName: [null, Validators.required],
       middleName: [null],

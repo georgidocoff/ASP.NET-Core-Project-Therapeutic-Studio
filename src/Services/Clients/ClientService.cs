@@ -41,6 +41,12 @@
         public async Task<ClientModel> DeleteClient(Guid id)
         {
             var client = this.applicationDbContext.Clients.FirstOrDefault(s => s.Id == id);
+
+            if (client == null)
+            {
+                throw new InvalidOperationException("Null reference argument exception.");
+            }
+
             this.applicationDbContext.Clients.Remove(client);
             await this.applicationDbContext.SaveChangesAsync();
             return new ClientModel { Id = id };
@@ -56,6 +62,11 @@
         public async Task<ClientModel> UpdateClient(ClientModel clientModel, Guid id)
         {
             var client = this.applicationDbContext.Clients.FirstOrDefault(x => x.Id == id);
+
+            if (client == null)
+            {
+                throw new InvalidOperationException("Null reference argument exception.");
+            }
 
             if (clientModel.FirstName != string.Empty)
             {
