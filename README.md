@@ -1,14 +1,11 @@
 # ASP.NET-Core-Project-Therapeutic-Studio
 with Web Api - Angular
 
-This is some project for Therapeutic Studio with 
-
-Scheduler and do same basic functionality with:
-
-- manage clients,
-- manage trainer,
-- manage procedure,
-- manage payments.
+This is a Therapeutic Studio project.
+The main functionalities are: 
+ - drawing up a schedule for clients' visits; 
+ - drawing up a schedule of therapists for their employment;
+ - monitoring payments and managed procedures.
 
 Project Start:
 - Download project to a local machine via .zip file.
@@ -21,19 +18,23 @@ Project Start:
 			- 3 Therapists;
 			- 3 Procedure;
 			- 3 Clients.
+
 			
-Project Functionality:
+Project Functionalities:
 ----------------------
 
-Registered User without admin previlegue can:
+Two types of users can work with the platform: 
+	with administrative rights and without such.
+
+Registered User without admin rights may:
 
 In Home/Scheduler View:
- - add new Procedure for existing Client (parameter: existing therapist, for getted hour) and select the wright one;
- - can edit existing procedure and select payment method;
+ - add new Procedure for an existing Client with parameters- existing therapist and exact time, and selecting the correct procedure from dropdown;
+ - can edit current procedure and choose a payment method;
  
 In Manage Client View:
- - view client Info and Time line for added Procedures;
- - the user can not modify Cient Information;
+ - can see the client information and Time line for booked Procedures;
+ - the user cannot change Cient Information;
  
 
 The seeded admin user is:
@@ -41,24 +42,24 @@ The seeded admin user is:
 user: admin@studio.com
 pass: admin123
 
-Admin user can:
+User with admin rights may:
 
 In Home/Scheduler View:
- - can do same as user;
+ - can do anything that is allowed to the user without admin rights;
 
 In Manage Client View:
- - view client Info and Time line for added Procedures;
- - edit user info
+ - can see the client information and Time line for booked Procedures;
+ - the user can change Cient Information;
 
 In Cash View:
- - for the selected day can view Time line of paid/unpaid for all payments
+ - can monitor payments for specific day by tracking them by payment method and time;
 
 In Administration View
- - a. can create new therapist;
+ - a. can create a new therapist;
  - a. can manage all therapists (including delete one);
- - b. can create new procedure;
+ - b. can create a new procedure;
  - b. can manage all procedures (including delete one);
- - c. can create new client;
+ - c. can create a new client;
  - c. can manage all clients (including delete one);
 ----------------------
  
