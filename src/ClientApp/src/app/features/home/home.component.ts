@@ -135,13 +135,8 @@ export class HomeComponent {
         this.isLoading = true;
       }, 500);
     }
-
-
   }
 
-  // onClosed(dismissedAlert: AlertConfig): void {
-  //   this.alerts = this.alerts.filter(alert => alert !== dismissedAlert);
-  // }
   private changeDate(modifier: number): void {
     this.isLoading = false;
 
@@ -187,8 +182,9 @@ export class HomeComponent {
         ? this.clientFullName
         : this.form.value.clientFullName
       , this.clients);
-
-    if (this.form.valid) {
+      
+    if (this.form.valid 
+      ||(currentProcedure && currentClient)) {
       this.show = !this.show;
 
       let currentScheduler = new SchedulerModel;
@@ -286,7 +282,6 @@ export class HomeComponent {
     this.showDialogDropdown = !this.showDialogDropdown;
 
     if (dtData.length == 2) {
-
       this.paymentMethodAccess = true;
       this.procedure = this.proceduresService.getProcedureName(dtData[1], this.procedures);
       this.clientFullName = dtData[0];
