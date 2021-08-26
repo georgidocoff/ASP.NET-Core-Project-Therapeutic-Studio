@@ -60,14 +60,13 @@ export class CreateComponent implements OnInit {
             setTimeout(() => {
 
               this.router.navigate(['/']);
+               this.form.reset();
             }, 2000);
           },
           error: (err) => {
             console.error(err);
           }
-        });
-
-      this.form.reset();
+        });     
     }
   }
 
